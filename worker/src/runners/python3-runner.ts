@@ -1,4 +1,4 @@
-import { Runner } from "./Runner";
+import { Runner } from "./runner";
 
 const TD_PYTHON3_DOCKER_IMAGE_NAME = "td-challenge-python3-container"
 
