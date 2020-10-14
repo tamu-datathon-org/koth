@@ -2,21 +2,35 @@
   "name": "@koth/website",
   "version": "1.0.0",
   "scripts": {
-    "dev": "next",
+    "dev": "run-p dev:*",
+    "dev:proxy": "node scripts/dev.js",
+    "dev:next": "next dev",
     "vercel-dev": "vercel dev",
     "build": "next build",
     "start": "next start",
     "type-check": "tsc"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.32",
+    "@fortawesome/free-regular-svg-icons": "^5.15.1",
+    "@fortawesome/free-solid-svg-icons": "^5.15.1",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "bootstrap": "^4.5.2",
+    "isomorphic-unfetch": "^3.1.0",
     "next": "latest",
     "react": "^16.12.0",
-    "react-dom": "^16.12.0"
+    "react-bootstrap": "^1.3.0",
+    "react-dom": "^16.12.0",
+    "sass": "^1.27.0",
+    "swr": "^0.3.5"
   },
   "devDependencies": {
     "@types/node": "^12.12.21",
     "@types/react": "^16.9.16",
     "@types/react-dom": "^16.9.4",
+    "express": "^4.17.1",
+    "http-proxy": "^1.18.1",
+    "npm-run-all": "^4.1.5",
     "typescript": "4.0",
     "vercel": "^20.1.2"
   },

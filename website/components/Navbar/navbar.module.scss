@@ -1,0 +1,61 @@
+.navbar {
+  border-bottom: solid 1px #cfcfcf;
+}
+
+.navbarLogo {
+  width: 40px;
+  height: 40px;
+}
+
+.navLink {
+  padding: 10px 15px !important;
+  color: #4740af !important;
+}
+
+.navbarSpan {
+  display: inline-flex;
+  align-items: center;
+  width: 120px;
+  height: 100%;
+}
+
+.navUserInfoDivider {
+  margin: 10px auto;
+}
+
+.navUserInfo {
+  padding: 10px 15px;
+}
+
+.dropdownLink {
+  color: #4740af !important;
+  margin: 10px auto;
+  display: block;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.navbarDropdownToggle {
+  &,
+  &:hover,
+  &:focus {
+    background: transparent !important;
+    border: none !important;
+    color: #4740af !important;
+    padding: 0 !important;
+  }
+}
+
+.navbarUserIcon {
+  font-size: 25px;
+}
+
+.navbarLoginLink {
+  &,
+  &:hover,
+  &:focus {
+    color: #4740af;
+  }
+}
