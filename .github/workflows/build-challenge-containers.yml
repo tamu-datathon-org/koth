@@ -19,4 +19,3 @@ jobs:
           image-name: td-challenge-python3 # Provide only Docker image name, tag will be automatically set to latest
           dockerfile: Dockerfile
           build-context: ./challenge-containers/python3
-          pull-image: true
