@@ -12,9 +12,10 @@ export const Python3Runner: Runner = {
         args: [
             "run",
             "--network", "none",
-            "-i", TD_PYTHON3_DOCKER_IMAGE_NAME,
-            "-v", `${process.cwd()}/work/${job.submissionId}:/workspace`,
-            "python3", `/workspace/${job.entrypointFile}`
+            "-v", `${process.env.HOST_KOTH_WORKER_ROOT}/work/${job.submissionId}:/workspace`,
+            "-it", TD_PYTHON3_DOCKER_IMAGE_NAME,
+            "python3", `/workspace/${job.entrypointFile}`,
+            "<<EOF"
         ]
     })
 }

@@ -2,7 +2,7 @@ import { EvaluateSubmissionJob } from "../types";
 import { Evaluator } from "./evaluator";
 import fs from 'fs';
 
-const STOCK_PROBLEM_ID = "dfsfsdfmksldafm";
+const STOCK_PROBLEM_ID = "stock-prediction";
 
 /**
  * Evaluator for the Stock challenge
@@ -47,6 +47,7 @@ export class StockProblemEvaluator extends Evaluator {
 
     public onProgramOutput(job: EvaluateSubmissionJob, output: string, writeToInput: (textToWrite: string) => void) {
         if (this.currentRow < this.testData.length) {
+            console.log("gonna write", this.testData[this.currentRow].join(", ") + "\n")
             writeToInput(this.testData[this.currentRow].join(", ") + "\n");
             this.currentRow += 1;
         }
