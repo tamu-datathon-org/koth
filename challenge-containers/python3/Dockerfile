@@ -16,10 +16,12 @@ ENV PYTHON_PACKAGES="\
     keras \
     pandas \
     nltk \
+    Theano \
+    pyspark \
     " 
 
-RUN apt update
-RUN apt install -y python3-pip
+RUN apt-get update
+RUN apt-get install -y python3-pip
 RUN pip3 install --no-cache-dir $PYTHON_PACKAGES
 
 CMD ["python3"] 

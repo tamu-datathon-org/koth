@@ -14,4 +14,6 @@ seaborn==0.11.0
 keras==2.4.3
 pandas==1.1.3
 nltk==3.5
+Theano==1.0.5
+pyspark==3.0.1
 ```
