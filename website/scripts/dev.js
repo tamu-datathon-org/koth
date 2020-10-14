@@ -14,7 +14,7 @@ const proxyToLocalhost = (req, res, next) => {
   try {
     const path = req.originalUrl.split("/").slice(1);
     let url = req.originalUrl;
-    if (path[0] == "events") {
+    if (path[0] == "koth") {
       url = path.length >= 1 ? path.join("/") : "";
     }
     req.originalUrl = url;

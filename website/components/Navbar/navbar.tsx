@@ -31,7 +31,7 @@ export const Navbar = () => {
       <span className={styles.navbarSpan}>
         <ReactNavbar.Toggle aria-controls="navbar-responsive-dropdown" />
         <img
-          src="/events/static/img/logos/main.png"
+          src="/koth/static/img/logos/main.png"
           className={`d-none d-sm-block ${styles.navbarLogo}`} // Hide icon below sm screens.
         ></img>
       </span>

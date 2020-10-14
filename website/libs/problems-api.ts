@@ -1,5 +1,7 @@
 import * as firestore from "./firestore";
 
+const PROBLEMS_COLLECTION = process.env.DB_PROBLEMS_COLLECTION || "problems";
+
 export interface Problem {
     id: string;
     title: string;
@@ -7,12 +9,9 @@ export interface Problem {
     detailsLink?: string;
 }
 
-const PROBLEMS_COLLECTION = process.env.DB_PROBLEMS_COLLECTION || "problems";
-
 export const getProblem = async (
     problemId: string
 ): Promise<Problem | null> => {
-    console.log(problemId);
     const problem = await firestore.getDoc(PROBLEMS_COLLECTION, problemId);
     if (!problem) return null;
     return {
