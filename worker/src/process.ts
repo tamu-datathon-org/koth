@@ -1,6 +1,7 @@
 import { Job } from "bull";
 import { execFile, spawn } from "child_process";
 import request from "request";
+import fs from "fs";
 import unzipper from "unzipper";
 import { Evaluator } from "./evaluators";
 import { getBestEvaluator } from "./evaluators/get-best-evaluator";
@@ -125,14 +126,14 @@ module.exports = async (job: Job<EvaluateSubmissionJob>) => {
 
         finalTermOutput += "Downloading and extracting code archive...\n"
         await downloadAndExtractArchive(data.downloadUrl, `work/${data.submissionId}/`);
-        job.progress(33);
+        await job.progress(33);
 
         finalTermOutput += "Compiling Submission (if applicable)...\n";
         const compilationCommand = runner.getCompilationCommand(data);
         if (compilationCommand)
             finalTermOutput += `$ ${compilationCommand.termOutput}\n`;
         finalTermOutput += await compileSubmission(compilationCommand);
-        job.progress(66);
+        await job.progress(66);
 
         finalTermOutput += "Executing submission on test data...\n";
         const runtimeCommand = runner.getRuntimeCommand(data);
@@ -142,20 +143,24 @@ module.exports = async (job: Job<EvaluateSubmissionJob>) => {
         console.log(runtimeCommand.executable, runtimeCommand.args.join(" "))
 
         finalTermOutput += await evaluateSubmission(runtimeCommand, data, evaluator);
-        job.progress(99);
+        await job.progress(99);
 
         finalTermOutput += "\n";
         finalTermOutput += evaluator.generateReport();
         finalScore = evaluator.getScore();
-        job.log(finalTermOutput);
+        await job.log(finalTermOutput);
     } catch (e) {
         job.log(finalTermOutput);
         finalTermOutput += `\033[31m${e.message}\033[39m`;
-        job.log(e.stack);
+        await job.log(e.stack);
     }
 
+    await fs.promises.rmdir(`work/${data.submissionId}/`);
+
+    await job.progress(100);
+
     return {
-        status: finalScore < 0 ? "ERRORED" : "FINISHED",
+        status: finalScore < 0 ? "ERRORED" : "SUCCESS",
         finalScore,
         termOutput: finalTermOutput
     }

@@ -37,14 +37,21 @@ app.post("/koth/admin/enqueue", secretKeyAuth(secretKey), async (req, res) => {
         entrypointFile
     }
     try {
-        const submittedJob = await processQueue.add(newSubmission);
-        console.log(submittedJob);
+        await processQueue.add(newSubmission);
         return res.status(200).send();
     } catch(e) {
         console.error(e);
         return res.status(500).send();
     }
 });
+
+processQueue.on('progress', (job) => {
+    console.log(`progress: ${job.id}, ${job.progress()}%`)
+});
+
+processQueue.on('completed', (job) => {
+    console.log(`job completed: ${job.id} ${JSON.stringify(job.returnvalue)}`)
+})
 
 app.listen(parseInt(port, 10), "0.0.0.0", () => {
     console.log(`Listening on port ${port}`)
