@@ -7,6 +7,7 @@ export interface CommandPayload {
 }
 
 export interface Runner {
+    canHandle: (job: EvaluateSubmissionJob) => boolean;
     getCompilationCommand: (job: EvaluateSubmissionJob) => CommandPayload | undefined;
     getRuntimeCommand: (job: EvaluateSubmissionJob) => CommandPayload;
 }

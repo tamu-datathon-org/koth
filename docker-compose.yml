@@ -14,6 +14,26 @@ services:
             PORT: 3000
             SECRET_KEY: "secretKey"
             REDIS_URL: "redis://redis:6379"
+            GATEKEEPER_URL: "https://dev.tamudatathon.com/auth"
+            STOCK_PROBLEM_TEST_FILE: "/secret/test.csv"
+            HOST_KOTH_WORKER_ROOT: "/Users/george/tamu-datathon/koth/worker" # this will need to be changed per dev and it must be an absolute path
         volumes:
             - ./worker:/workspace
             - /var/run/docker.sock:/var/run/docker.sock
+            - ../test-cases:/secret
+        ports:
+            - 4000:3000
+    website:
+        build:
+            context: ./website
+            dockerfile: Dockerfile
+        volumes:
+            - ./website:/workspace
+        command: npm run dev
+        privileged: true
+        ports: 
+            - 3000:3000
+        environment: 
+            GATEKEEPER_URL: "https://dev.tamudatathon.com/auth"
+            WORKER_SPAWNER_URL: "http://worker:3000/koth/admin"
+            WORKER_SPAWNER_KEY: "secretKey"
