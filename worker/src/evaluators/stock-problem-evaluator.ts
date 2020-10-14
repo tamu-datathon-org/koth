@@ -36,15 +36,18 @@ export class StockProblemEvaluator extends Evaluator {
             this.testData.push(line.split(",").map(val => val.trim()))
         })
     }
-    
-    public canHandle(job: EvaluateSubmissionJob): boolean {
+
+    /**
+     * Function to determine whether this particular evaluator should be used with submission
+     */
+    public static canHandle(job: EvaluateSubmissionJob): boolean {
         return job.problemId === STOCK_PROBLEM_ID;
     }
     
 
     public onProgramOutput(job: EvaluateSubmissionJob, output: string, writeToInput: (textToWrite: string) => void) {
         if (this.currentRow < this.testData.length) {
-            writeToInput(this.testData[this.currentRow].join(", "))
+            writeToInput(this.testData[this.currentRow].join(", ") + "\n");
             this.currentRow += 1;
         }
 
