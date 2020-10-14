@@ -16,6 +16,8 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
     "@fortawesome/react-fontawesome": "^0.1.11",
     "@google-cloud/firestore": "^4.4.0",
+    "@vercel/node": "^1.8.4",
+    "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
     "isomorphic-unfetch": "^3.1.0",
     "next": "latest",

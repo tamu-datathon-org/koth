@@ -1,39 +1,57 @@
-import { GetStaticProps, GetStaticPaths } from "next";
-import { Navbar } from "../../components/Navbar";
-import { getAllProblems, getProblem, Problem } from "../../libs/problems-api";
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { Container, Row, Spinner } from "react-bootstrap";
+import { Problem } from "../../libs/problems-api";
+import { Submission } from "../../libs/submissions-api";
 
-interface ProblemPageProps {
+interface ProblemPageData {
   problem: Problem;
+  submissions: Submission[];
 }
 
-const ProblemPage: React.FC<ProblemPageProps> = ({ problem }) => {
-  if (!problem) {
-    return <h1>The given problem cannot be found</h1>;
+const LoadingSpinner = (
+  <Container className="">
+    <Row className="justify-content-center" style={{ marginTop: "30vh" }}>
+      <Spinner animation="border" variant="secondary" />
+    </Row>
+  </Container>
+);
+
+const ProblemPage: React.FC<{}> = () => {
+  const router = useRouter();
+  const [data, setData] = useState<ProblemPageData | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  const problemId = router.query.id as string;
+
+  const fetchData = async () => {
+    if (!problemId) return;
+    try {
+      console.log(problemId);
+      const problemData = await axios.get(`/koth/api/problems/${problemId}`);
+      setData(problemData.data as ProblemPageData);
+    } catch (e) {
+      setError(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [problemId]);
+
+  if (error) {
+    return <h1>Something went wrong!</h1>;
   }
+  if (!data) {
+    return LoadingSpinner;
+  }
+  const { problem, submissions } = data;
   return (
     <>
-      <Navbar />
-      <h1>{problem.title}</h1>
+      <h1>{problem.id}</h1>
+      <p>{problem.instructions}</p>
     </>
   );
 };
 
 export default ProblemPage;
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  // Get the paths we want to pre-render based on users
-  const problems = await getAllProblems();
-  const paths = problems.map((problem) => ({
-    params: { id: problem.id },
-  }));
-
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
-  return { paths, fallback: false };
-};
-
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const id = params?.id;
-  const problem = await getProblem(id as string);
-  return { props: { problem } };
-};

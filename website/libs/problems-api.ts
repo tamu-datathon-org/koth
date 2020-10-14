@@ -13,7 +13,7 @@ export const getProblem = async (
     problemId: string
 ): Promise<Problem | null> => {
     const problem = await firestore.getDoc(PROBLEMS_COLLECTION, problemId);
-    if (!problem) return null;
+    if (!problem.data()) return null;
     return {
         id: problemId,
         title: problem.data()?.title,

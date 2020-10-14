@@ -38,7 +38,7 @@ export const getSubmission = async (
     submissionId: string
 ): Promise<Submission | null> => {
     let submission = await getDoc(SUBMISSIONS_COLLECTION, submissionId);
-    if (!submission) return null;
+    if (!submission.data()) return null;
     return {
       id: submissionId,
       userAuthId: submission.data()?.userAuthId,

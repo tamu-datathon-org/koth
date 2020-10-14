@@ -1,5 +1,4 @@
 import { useRouter } from "next/router";
-import { Navbar } from "../../components/Navbar";
 
 const SubmissionPage = () => {
   const router = useRouter();
@@ -7,7 +6,6 @@ const SubmissionPage = () => {
 
   return (
     <>
-      <Navbar />
       <h1>{submissionId}</h1>
     </>
   );
