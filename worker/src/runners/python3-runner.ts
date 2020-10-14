@@ -8,14 +8,13 @@ export const Python3Runner: Runner = {
     getCompilationCommand: () => undefined,
     getRuntimeCommand: (job) => ({
         executable: "docker",
-        termOutput: `python3 ${job.entrypointFile} < testCasesNoHeaderRow.csv`,
+        termOutput: `python3 -u ${job.entrypointFile} < testCasesNoHeaderRow.csv`,
         args: [
             "run",
             "--network", "none",
             "-v", `${process.env.HOST_KOTH_WORKER_ROOT}/work/${job.submissionId}:/workspace`,
-            "-it", TD_PYTHON3_DOCKER_IMAGE_NAME,
-            "python3", `/workspace/${job.entrypointFile}`,
-            "<<EOF"
+            "-i", TD_PYTHON3_DOCKER_IMAGE_NAME,
+            "python3", '-u', `/workspace/${job.entrypointFile}`,
         ]
     })
 }

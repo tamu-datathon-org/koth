@@ -1,5 +1,5 @@
 import { Job } from "bull";
-import { execFile } from "child_process";
+import { execFile, spawn } from "child_process";
 import request from "request";
 import unzipper from "unzipper";
 import { Evaluator } from "./evaluators";
@@ -39,33 +39,17 @@ const compileSubmission = async (compilationCommand: CommandPayload | undefined)
 
 const evaluateSubmission = async (runtimeCommand: CommandPayload | undefined, job: EvaluateSubmissionJob, evaluator: Evaluator) => {
     let termOutput = "";
-    let evalError: Error | undefined = undefined;
-
+    
     if (!runtimeCommand)
-        return termOutput;
-
+    return termOutput;
+    
     return new Promise((resolve, reject) => {
-        const childProcess = execFile(runtimeCommand.executable, runtimeCommand.args, {
+        const childProcess = spawn(runtimeCommand.executable, runtimeCommand.args, {
             timeout: 10000
-        }, (error) => {
-            console.log("on End")
-            if (error && error.code == 143) {
-                console.log("timeout");
-                return reject(new Error("Your program exceeded the runtime limit (10sec)..."));
-            } else if (error) {
-                console.log("runtime");
-                if (evalError) {
-                    return reject(evalError);
-                }
-                return reject(error);
-            } else {
-                console.log("success");
-                termOutput += "--hidden output--\n";
-                return resolve(termOutput);
-            }
         });
 
-        const onProcessOutputs = (chunk: any) => {
+        const onProcessOutputs = (chunk: string) => {
+            let evalError: Error | undefined = undefined;
             let shouldStayAlive = false;
             try {
                 shouldStayAlive = evaluator.onProgramOutput(
@@ -75,16 +59,50 @@ const evaluateSubmission = async (runtimeCommand: CommandPayload | undefined, jo
                 );
             } catch (e) {
                 evalError = e;
+                shouldStayAlive = false;
             } finally {
                 if (!shouldStayAlive) {
-                    childProcess.kill();
+                    childProcess.stdin?.end();
+                    childProcess.kill("SIGABRT");
+                    if (evalError) return reject(evalError);
                 }
             }
         }
 
-        childProcess.stdout?.on('data', onProcessOutputs);
+        let stdoutBuffer = "";
+        childProcess.stdout?.on('data', (chunk) => {
+            const chunkStr = chunk.toString();
+            for (let i=0; i<chunkStr.length; i++) {
+                stdoutBuffer += chunkStr[i];
+                if (chunkStr[i] === '\n') {
+                    onProcessOutputs(stdoutBuffer);
+                    stdoutBuffer = "";
+                }
+            }
+        });
+
         // do this to force evaluator to start outputting to stdin
         onProcessOutputs("");
+
+        childProcess.on('error', (error) => {
+            console.log("exec error")
+            return reject(error);
+        });
+
+        childProcess.on('exit', (code) => {
+            console.log("on exit", code)
+            if (code == 143) {
+                console.log("timeout");
+                return reject(new Error("Your program exceeded the runtime limit (10sec)..."));
+            } else if (code != 0) {
+                console.log("on runtime error");
+                return reject(new Error("A runtime error occurred."));
+            } else {
+                console.log("on success");
+                termOutput += "--hidden output--\n";
+                return resolve(termOutput);
+            }
+        });
     });
 }
 
@@ -120,7 +138,7 @@ module.exports = async (job: Job<EvaluateSubmissionJob>) => {
         const runtimeCommand = runner.getRuntimeCommand(data);
         if (runtimeCommand)
             finalTermOutput += `$ ${runtimeCommand.termOutput}\n`;
-        
+
         console.log(runtimeCommand.executable, runtimeCommand.args.join(" "))
 
         finalTermOutput += await evaluateSubmission(runtimeCommand, data, evaluator);
@@ -129,11 +147,11 @@ module.exports = async (job: Job<EvaluateSubmissionJob>) => {
         finalTermOutput += "\n";
         finalTermOutput += evaluator.generateReport();
         finalScore = evaluator.getScore();
+        job.log(finalTermOutput);
     } catch (e) {
         job.log(finalTermOutput);
-        job.log(e.stack);
-
         finalTermOutput += `\033[31m${e.message}\033[39m`;
+        job.log(e.stack);
     }
 
     return {
