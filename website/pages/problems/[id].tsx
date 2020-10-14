@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Container, Row, Spinner } from "react-bootstrap";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { Problem } from "../../libs/problems-api";
 import { Submission } from "../../libs/submissions-api";
 
@@ -9,14 +9,6 @@ interface ProblemPageData {
   problem: Problem;
   submissions: Submission[];
 }
-
-const LoadingSpinner = (
-  <Container className="">
-    <Row className="justify-content-center" style={{ marginTop: "30vh" }}>
-      <Spinner animation="border" variant="secondary" />
-    </Row>
-  </Container>
-);
 
 const ProblemPage: React.FC<{}> = () => {
   const router = useRouter();

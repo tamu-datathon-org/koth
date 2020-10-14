@@ -10,6 +10,7 @@ export interface Submission {
     status: string;
     score?: number;
     data?: any;
+    creationTimestamp?: number;
 }
 
 export const getUserSubmissions = async (
@@ -31,6 +32,7 @@ export const getUserSubmissions = async (
         status: submission.data().status,
         score: submission.data().score,
         data: submission.data().data,
+        creationTimestamp: submission.data().creationTimestamp,
     }));
 };
 
@@ -46,5 +48,6 @@ export const getSubmission = async (
       status: submission.data()?.status,
       score: submission.data()?.score,
       data: submission.data()?.data,
+      creationTimestamp: submission.data()?.creationTimestamp,
   }
 };
