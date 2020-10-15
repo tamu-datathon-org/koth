@@ -1,10 +1,16 @@
 FROM node:12.18.1
 
-COPY ["package.json", "package-lock.json*", "workspace/"]
+COPY ["package.json", "tsconfig.json", "package-lock.json*", "workspace/"]
+
+COPY ["src/","workspace/src/"]
+
 RUN mkdir dist/
+
 COPY ["dist/", "workspace/"]
 
 WORKDIR /workspace
+
+RUN ls
 
 RUN apt-get update
 RUN apt-get -y install apt-transport-https ca-certificates curl gnupg2 software-properties-common
@@ -15,6 +21,7 @@ RUN apt-cache policy docker-ce
 RUN apt-get -y install docker-ce
 
 RUN npm install
+
 RUN npm run build
 RUN mkdir -p work
 

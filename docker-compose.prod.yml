@@ -18,7 +18,6 @@ services:
             STOCK_PROBLEM_TEST_FILE: "/secret/test.csv"
             HOST_KOTH_WORKER_ROOT: "/Users/george/tamu-datathon/koth/worker" # this will need to be changed per dev and it must be an absolute path
         volumes:
-            - ./worker:/workspace
             - /var/run/docker.sock:/var/run/docker.sock
             - ../test-cases:/secret
         ports:
