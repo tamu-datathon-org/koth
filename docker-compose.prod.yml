@@ -1,0 +1,25 @@
+version: '3'
+services: 
+    redis:
+        image: redis
+        ports: 
+            - 6379:6379
+    worker:
+        depends_on: 
+            - redis
+        build:
+            context: ./worker
+            dockerfile: Dockerfile
+        environment: 
+            PORT: 3000
+            SECRET_KEY: "secretKey"
+            REDIS_URL: "redis://redis:6379"
+            GATEKEEPER_URL: "https://dev.tamudatathon.com/auth"
+            STOCK_PROBLEM_TEST_FILE: "/secret/test.csv"
+            HOST_KOTH_WORKER_ROOT: "/Users/george/tamu-datathon/koth/worker" # this will need to be changed per dev and it must be an absolute path
+        volumes:
+            - ./worker:/workspace
+            - /var/run/docker.sock:/var/run/docker.sock
+            - ../test-cases:/secret
+        ports:
+            - 4000:3000
