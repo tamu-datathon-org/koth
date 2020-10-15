@@ -14,7 +14,7 @@ RUN apt-get update
 RUN apt-cache policy docker-ce
 RUN apt-get -y install docker-ce
 
-RUN npm install --production
+RUN npm install
 RUN npm run build
 RUN mkdir -p work
 
