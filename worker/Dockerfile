@@ -1,6 +1,7 @@
 FROM node:12.18.1
 
 COPY ["package.json", "package-lock.json*", "workspace/"]
+RUN mkdir dist/
 COPY ["dist/", "workspace/"]
 
 WORKDIR /workspace
@@ -14,6 +15,7 @@ RUN apt-cache policy docker-ce
 RUN apt-get -y install docker-ce
 
 RUN npm install --production
+RUN npm run build
 RUN mkdir -p work
 
 CMD [ "npm", "start" ]
