@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Button, Form } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { Submission } from "../../libs/submissions-api";
 

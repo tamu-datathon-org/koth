@@ -4,7 +4,7 @@ import { v4 as uuid } from "uuid";
 import { getSignedUrlForSubmissionFile } from "../../../libs/submissions-api";
 
 const getSubmissionSignedUrlHandler = async (
-  req: NowRequest,
+  _req: NowRequest,
   res: NowResponse
 ): Promise<void> => {
   try {

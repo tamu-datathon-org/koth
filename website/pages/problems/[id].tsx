@@ -37,7 +37,7 @@ const ProblemPage: React.FC<{}> = () => {
   if (!data) {
     return LoadingSpinner;
   }
-  const { problem, submissions } = data;
+  const { problem } = data;
   return (
     <>
       <h1>{problem.id}</h1>
