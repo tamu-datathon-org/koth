@@ -9,9 +9,9 @@ export interface Submission {
     userAuthId: string;
     problemId: string;
     status: string;
-    score?: number;
+    score: number;
+    creationTimestamp: number;
     data?: any;
-    creationTimestamp?: number;
 }
 
 export const getUserSubmissions = async (
