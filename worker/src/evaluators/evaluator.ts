@@ -5,10 +5,6 @@ import { EvaluateSubmissionJob } from "../types";
  */
 export abstract class Evaluator {
     /**
-     * Function to determine whether this particular evaluator should be used with submission
-     */
-    public abstract canHandle(job: EvaluateSubmissionJob): boolean;
-    /**
      * Function that is called everytime the submission prints to stdout, each time the evaluator has a change to write another line to stdin
      * @returns true if the program should continue to be executed, false if program should be terminated (usually done when test case is over)
      */
