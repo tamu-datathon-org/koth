@@ -1,61 +1,49 @@
-import { GetStaticProps, GetStaticPaths } from 'next'
+import axios from "axios";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { LoadingSpinner } from "../../components/LoadingSpinner";
+import { Problem } from "../../libs/problems-api";
+import { Submission } from "../../libs/submissions-api";
 
-import { User } from '../../interfaces'
-import { sampleUserData } from '../../utils/sample-data'
-import Layout from '../../components/Layout'
-import ListDetail from '../../components/ListDetail'
-
-type Props = {
-  item?: User
-  errors?: string
+interface ProblemPageData {
+  problem: Problem;
+  submissions: Submission[];
 }
 
-const StaticPropsDetail = ({ item, errors }: Props) => {
-  if (errors) {
-    return (
-      <Layout title="Error | Next.js + TypeScript Example">
-        <p>
-          <span style={{ color: 'red' }}>Error:</span> {errors}
-        </p>
-      </Layout>
-    )
-  }
+const ProblemPage: React.FC<{}> = () => {
+  const router = useRouter();
+  const [data, setData] = useState<ProblemPageData | null>(null);
+  const [error, setError] = useState<boolean>(false);
+  const problemId = router.query.id as string;
 
+  const fetchData = async () => {
+    if (!problemId) return;
+    try {
+      console.log(problemId);
+      const problemData = await axios.get(`/koth/api/problems/${problemId}`);
+      setData(problemData.data as ProblemPageData);
+    } catch (e) {
+      setError(true);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [problemId]);
+
+  if (error) {
+    return <h1>Something went wrong!</h1>;
+  }
+  if (!data) {
+    return LoadingSpinner;
+  }
+  const { problem } = data;
   return (
-    <Layout
-      title={`${
-        item ? item.name : 'User Detail'
-      } | Next.js + TypeScript Example`}
-    >
-      {item && <ListDetail item={item} />}
-    </Layout>
-  )
-}
+    <>
+      <h1>{problem.id}</h1>
+      <p>{problem.instructions}</p>
+    </>
+  );
+};
 
-export default StaticPropsDetail
-
-export const getStaticPaths: GetStaticPaths = async () => {
-  // Get the paths we want to pre-render based on users
-  const paths = sampleUserData.map((user) => ({
-    params: { id: user.id.toString() },
-  }))
-
-  // We'll pre-render only these paths at build time.
-  // { fallback: false } means other routes should 404.
-  return { paths, fallback: false }
-}
-
-// This function gets called at build time on server-side.
-// It won't be called on client-side, so you can even do
-// direct database queries.
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  try {
-    const id = params?.id
-    const item = sampleUserData.find((data) => data.id === Number(id))
-    // By returning { props: item }, the StaticPropsDetail component
-    // will receive `item` as a prop at build time
-    return { props: { item } }
-  } catch (err) {
-    return { props: { errors: err.message } }
-  }
-}
+export default ProblemPage;
