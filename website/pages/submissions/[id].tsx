@@ -40,10 +40,9 @@ const SubmissionPage = () => {
     try {
       const urlResponse = await axios.get("/koth/api/submission-signed-url");
       const signedUrl = urlResponse.data.url[0];
-      console.log(signedUrl);
       var formData = new FormData();
       formData.append("file", file);
-      axios.post(signedUrl, formData, {
+      axios.put(signedUrl, formData, {
         headers: {
           "Access-Control-Allow-Origin": "*",
           "Content-Type": "multipart/form-data",
