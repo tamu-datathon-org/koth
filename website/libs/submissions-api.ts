@@ -1,4 +1,5 @@
 import { getCollection, getDoc } from "./firestore";
+import { firebaseBucket } from "./firebase";
 
 const SUBMISSIONS_COLLECTION =
     process.env.DB_SUBMISSIONS_COLLECTION || "submissions";
@@ -51,3 +52,9 @@ export const getSubmission = async (
       creationTimestamp: submission.data()?.creationTimestamp,
   }
 };
+
+export const getSignedUrlForSubmissionFile = (fileName: string) =>
+  firebaseBucket.file(`${SUBMISSIONS_COLLECTION}/${fileName}`).getSignedUrl({
+    action: "write",
+    expires: Date.now() + 1000 * 60 * 5, // Signed URL expires in 5 minutes
+  });

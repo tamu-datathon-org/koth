@@ -1,12 +1,6 @@
-import { Firestore } from "@google-cloud/firestore";
+import { firebase } from "./firebase";
 
-const firestore = new Firestore({
-  projectId: process.env.FIRESTORE_PROJECT_ID,
-  credentials: {
-    client_email: process.env.FIRESTORE_CLIENT_EMAIL,
-    private_key: process.env.FIRESTORE_PRIVATE_KEY,
-  },
-});
+const firestore = firebase.firestore();
 
 export const getCollection = (collection: string) =>
   firestore.collection(collection);
