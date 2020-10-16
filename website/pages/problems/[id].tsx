@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Button, Col, Container, Jumbotron, Row } from "react-bootstrap";
+import { Button, Col, Container, Row } from "react-bootstrap";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { SubmissionsTable } from "../../components/SubmissionsTable";
 import { Problem } from "../../libs/problems-api";
@@ -34,6 +34,11 @@ const ProblemPage: React.FC<{}> = () => {
     fetchData();
   }, [problemId]);
 
+  // Call this after uploading submission file.
+  const createSubmission = async (submissionId: string, submissionFilename: string) => {
+
+  }
+
   if (error) {
     return <h1>Something went wrong!</h1>;
   }
@@ -41,7 +46,6 @@ const ProblemPage: React.FC<{}> = () => {
     return LoadingSpinner;
   }
   const { problem, submissions } = data;
-
   const sortedSubmissions = submissions.sort((a, b) =>
     a.score < b.score ? 1 : -1
   );

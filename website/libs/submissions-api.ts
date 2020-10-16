@@ -1,4 +1,4 @@
-import { getCollection, getDoc } from "./firestore";
+import { getCollection, getDoc, setDoc } from "./firestore";
 import { firebaseBucket } from "./firebase";
 
 const SUBMISSIONS_COLLECTION =
@@ -52,6 +52,19 @@ export const getSubmission = async (
       creationTimestamp: submission.data()?.creationTimestamp,
   }
 };
+
+export const createSubmission = async (id: string, problemId: string, userAuthId: string): Promise<Submission> => {
+    const submission: Submission = {
+        id,
+        problemId,
+        userAuthId,
+        status: "SUBMITTED",
+        score: 0,
+        creationTimestamp: Date.now()
+    };
+    await setDoc(SUBMISSIONS_COLLECTION, id, submission);
+    return submission;
+}
 
 export const getSignedUrlForSubmissionFile = (fileName: string) =>
   firebaseBucket.file(`${SUBMISSIONS_COLLECTION}/${fileName}`).getSignedUrl({
