@@ -43,23 +43,8 @@ const ProblemPage: React.FC<{}> = () => {
       await axios.post("/koth/api/submissions", {
         id: submissionId,
         problemId,
+        downloadUrl,
       });
-      await axios.post(
-        "/koth/admin/enqueue",
-        {
-          languageUsed: "PYTHON#",
-          entrypointFile: "main.py",
-          problemId,
-          submissionId,
-          downloadUrl,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": process.env.GATEKEEPER_INTEGRATION_SECRET,
-          },
-        }
-      );
       router.push(`/submissions/${submissionId}`);
     } catch (e) {
       console.log(e);
