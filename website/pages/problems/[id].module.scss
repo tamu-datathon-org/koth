@@ -22,15 +22,11 @@
     border: solid #7c408a 2px;
     border-radius: 5px;
     transition: background-color 0.25s ease, border 0.25s ease;
+
+    &:active:focus {
+      background-color: #7c408a;
+      color: white;
+      outline: none;
+    }
   }
-
-  // .btn:active {
-  //   background-color: transparent;
-  //   color: #7c408a;
-  // }
-
-  // .btn:focus {
-  //   background-color: transparent;
-  //   color: #7c408a;
-  // }
 }
