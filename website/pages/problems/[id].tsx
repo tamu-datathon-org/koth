@@ -35,9 +35,37 @@ const ProblemPage: React.FC<{}> = () => {
   }, [problemId]);
 
   // Call this after uploading submission file.
-  const createSubmission = async (submissionId: string, submissionFilename: string) => {
-
-  }
+  const createSubmission = async (
+    submissionId: string,
+    downloadUrl: string
+  ) => {
+    try {
+      await axios.post("/koth/api/submissions", {
+        id: submissionId,
+        problemId,
+      });
+      await axios.post(
+        "/koth/admin/enqueue",
+        {
+          languageUsed: "PYTHON#",
+          entrypointFile: "main.py",
+          problemId,
+          submissionId,
+          downloadUrl,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": process.env.GATEKEEPER_INTEGRATION_SECRET,
+          },
+        }
+      );
+      router.push(`/submissions/${submissionId}`);
+    } catch (e) {
+      console.log(e);
+      setError(true);
+    }
+  };
 
   if (error) {
     return <h1>Something went wrong!</h1>;
