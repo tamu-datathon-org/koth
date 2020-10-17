@@ -112,7 +112,7 @@ const SubmissionPage = () => {
           </Row>
           <Row>
             <pre className={`${styles.outputDiv}`} id="terminalOutput">
-              {submission.data?.output || TEST_OUTPUT}
+              {submission.termOutput|| TEST_OUTPUT}
             </pre>
           </Row>
         </Col>

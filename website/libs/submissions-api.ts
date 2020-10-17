@@ -26,6 +26,7 @@ export interface Submission {
   score: number;
   creationTimestamp: number;
   data?: any;
+  termOutput?: string;
 }
 
 export const getUserSubmissions = async (

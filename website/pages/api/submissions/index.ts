@@ -40,7 +40,7 @@ const getSubmissionDataHandler = async (
     const downloadUrl = await getSignedUrlForSubmissionFile(submissionId, "getObject");
 
     await Axios.post(
-      "/koth/admin/enqueue",
+      `${process.env.WORKER_SPAWNER_URL}/enqueue`,
       {
         languageUsed: "PYTHON#",
         entrypointFile: "main.py",
@@ -51,7 +51,7 @@ const getSubmissionDataHandler = async (
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: process.env.GATEKEEPER_INTEGRATION_SECRET,
+          Authorization: process.env.WORKER_SPAWNER_KEY,
         },
       }
     );

@@ -1,4 +1,4 @@
-import * as dayjs from "dayjs";
+import dayjs from "dayjs";
 import React from "react";
 import { Button, Table } from "react-bootstrap";
 import { Submission, SubmissionStatus } from "../../libs/submissions-api";
@@ -54,7 +54,7 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({
                 {idx + 1}
               </Button>
             </td>
-            <td>{dayjs.unix(val.creationTimestamp).fromNow()}</td>
+            <td>{dayjs(val.creationTimestamp).fromNow()}</td>
             <td className={statusStyleMap(val.status)}>{val.status}</td>
             <td>{val.score}</td>
           </tr>

@@ -12,8 +12,13 @@ export const authenticatedRoute = (
   handler: AuthenticatedRouteHandler
 ) => async (req: NowRequest, res: NowResponse): Promise<void> => {
   const response: User | GatekeeperRequestError = await authenticatedFetch(
-    `${getBaseUrl(req)}/auth/user`,
-    req
+    `${process.env.GATEKEEPER_URL}/user`,
+    req,
+    {
+      headers: {
+        accept: "application/json",
+      },
+    }
   );
 
   if ((response as GatekeeperRequestError).statusCode === 401)

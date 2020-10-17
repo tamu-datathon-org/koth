@@ -42,9 +42,7 @@ const ProblemPage: React.FC<{}> = () => {
   }, [problemId]);
 
   // Call this after uploading submission file.
-  const createSubmission = async (
-    submissionId: string
-  ) => {
+  const createSubmission = async (submissionId: string) => {
     try {
       await axios.post("/koth/api/submissions", {
         id: submissionId,
@@ -124,9 +122,13 @@ const ProblemPage: React.FC<{}> = () => {
       <Row className={`justify-content-center`}>
         <Col sm="auto" className={`text-center ${styles.submissionDetails}`}>
           <Row className={`pb-4 justify-content-between align-items-center`}>
-            <Col sm="auto">
-              Your Highest Score: {sortedSubmissions[0].score}
-            </Col>
+            {sortedSubmissions ? (
+              <Col sm="auto">
+                Your Highest Score: {sortedSubmissions[0].score}
+              </Col>
+            ) : (
+              <></>
+            )}
             <Col sm="auto">
               <Button
                 variant="outline-primary"
