@@ -9,7 +9,7 @@ const getSubmissionSignedUrlHandler = async (
 ): Promise<void> => {
   try {
     const id = uuid();
-    const url = await getSignedUrlForSubmissionFile(id);
+    const url = await getSignedUrlForSubmissionFile(id, "putObject");
     res.status(200).json({ url, id });
   } catch (e) {
     console.log(e);

@@ -2,7 +2,7 @@ import { NowRequest, NowResponse } from "@vercel/node";
 import Axios from "axios";
 import { User } from "../../../components/UserProvider";
 import { authenticatedRoute } from "../../../libs/middleware";
-import { createSubmission, getSubmission } from "../../../libs/submissions-api";
+import { createSubmission, getSignedUrlForSubmissionFile, getSubmission } from "../../../libs/submissions-api";
 
 const getSubmissionDataHandler = async (
   req: NowRequest,
@@ -15,17 +15,16 @@ const getSubmissionDataHandler = async (
     if (
       !req.body ||
       !req.body.id ||
-      !req.body.problemId ||
-      !req.body.downloadUrl
+      !req.body.problemId
     ) {
       res.status(400).json({
         err:
-          "The request body must contain id (submission ID), problemId and downloadUrl",
+          "The request body must contain id (submission ID), problemId",
       });
       return;
     }
 
-    const { id: submissionId, problemId, downloadUrl } = req.body;
+    const { id: submissionId, problemId } = req.body;
 
     const submissionExistsCheck = await getSubmission(submissionId);
     if (submissionExistsCheck) {
@@ -37,6 +36,8 @@ const getSubmissionDataHandler = async (
       problemId,
       user.authId
     );
+
+    const downloadUrl = await getSignedUrlForSubmissionFile(submissionId, "getObject");
 
     await Axios.post(
       "/koth/admin/enqueue",

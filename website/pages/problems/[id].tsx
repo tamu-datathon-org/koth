@@ -43,16 +43,43 @@ const ProblemPage: React.FC<{}> = () => {
 
   // Call this after uploading submission file.
   const createSubmission = async (
-    submissionId: string,
-    downloadUrl: string
+    submissionId: string
   ) => {
     try {
       await axios.post("/koth/api/submissions", {
         id: submissionId,
         problemId,
-        downloadUrl,
       });
       router.push(`/submissions/${submissionId}`);
+    } catch (e) {
+      console.log(e);
+      setError(true);
+    }
+  };
+
+  const submissionHandler = async (data: SubmissionModalOutput) => {
+    let { submissionFile } = data;
+    try {
+      const signedUrlResp = await axios.get("/koth/api/submission-signed-url");
+      const { url, id } = signedUrlResp.data;
+
+      // Hack to change filename for dumb AWS crap.
+      var blob = submissionFile!.slice(
+        0,
+        submissionFile!.size,
+        "application/octet-stream"
+      );
+      const newSubmissionFile = new File([blob], id, {
+        type: "application/octet-stream",
+      });
+
+      await axios.put(url, newSubmissionFile, {
+        headers: {
+          "Content-Type": "application/octet-stream",
+          "x-amz-acl": "public-read",
+        },
+      });
+      await createSubmission(id);
     } catch (e) {
       console.log(e);
       setError(true);
@@ -118,10 +145,7 @@ const ProblemPage: React.FC<{}> = () => {
       <SubmissionModal
         show={showSubmissionModal}
         onHide={() => setShowSubmissionModal(false)}
-        onSubmit={(submissionData: SubmissionModalOutput) => {
-          console.log(submissionData);
-          // TODO: Call submission API and stuff.
-        }}
+        onSubmit={submissionHandler}
       />
     </Container>
   );
