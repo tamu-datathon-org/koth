@@ -28,7 +28,6 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
           <Form.File
             id="submission-file"
             label="Upload your submission file."
-            custom
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const submissionFile =
                 e.target.files == null ? null : e.target.files[0];
