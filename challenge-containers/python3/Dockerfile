@@ -23,5 +23,6 @@ ENV PYTHON_PACKAGES="\
 RUN apt-get update
 RUN apt-get install -y python3-pip
 RUN pip3 install --no-cache-dir $PYTHON_PACKAGES
+RUN apt-get install -y tree
 
 CMD ["python3"] 

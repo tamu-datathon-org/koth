@@ -19,6 +19,7 @@ RUN add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/debia
 RUN apt-get update
 RUN apt-cache policy docker-ce
 RUN apt-get -y install docker-ce
+RUN apt-get -y install tree
 
 RUN npm install
 

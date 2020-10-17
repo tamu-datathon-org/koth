@@ -8,6 +8,7 @@ import { getBestEvaluator } from "./evaluators/get-best-evaluator";
 import { CommandPayload } from "./runners";
 import { getBestRunner } from "./runners/get-best-runner";
 import { firebase } from "./firebase";
+import rimraf from "rimraf";
 import { EvaluateSubmissionJob } from "./types";
 
 const updateSubmissionDocument = (submissionId: string, whatToUpdate: any) =>
@@ -159,17 +160,17 @@ module.exports = async (job: Job<EvaluateSubmissionJob>) => {
     finalScore = evaluator.getScore();
     await job.log(finalTermOutput);
     await updateSubmissionDocument(data.submissionId, { termOutput: finalTermOutput, score: finalScore, status: "SUCCESS" });
+
+    rimraf.sync(`work/${data.submissionId}/`);
+    await job.progress(100);
   } catch (e) {
     finalTermOutput += `\033[31m${e.message}\033[39m`;
     job.log(finalTermOutput);
     await updateSubmissionDocument(data.submissionId, { termOutput: finalTermOutput, score: -1, status: "FAILED" });
     await job.log(e.stack);
+
+    throw e;
   }
-
-  await fs.promises.rmdir(`work/${data.submissionId}/`);
-
-  await job.progress(100);
-
   return {
     status: finalScore < 0 ? "ERRORED" : "SUCCESS",
     finalScore,

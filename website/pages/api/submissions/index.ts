@@ -42,7 +42,7 @@ const getSubmissionDataHandler = async (
     await Axios.post(
       `${process.env.WORKER_SPAWNER_URL}/enqueue`,
       {
-        languageUsed: "PYTHON#",
+        languageUsed: "PYTHON3",
         entrypointFile: "main.py",
         problemId,
         submissionId,
