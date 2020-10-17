@@ -19,6 +19,7 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
 }) => {
   const [submissionFile, setSubmissionFile] = useState<File | null>(null);
   const [entrypointFile, setEntrypointFile] = useState("main.py");
+  const [submitting, setSubmitting] = useState(false);
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -57,10 +58,14 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
         </Button>
         <Button
           variant="primary"
-          onClick={() => onSubmit({ submissionFile, entrypointFile })}
+          onClick={() => {
+            onSubmit({ submissionFile, entrypointFile });
+            setSubmitting(true);
+          }}
           style={{ backgroundColor: "#7c408a" }}
+          disabled={submitting}
         >
-          Submit
+          {submitting ? "Submitting..." : "Submit"}
         </Button>
       </Modal.Footer>
     </Modal>
