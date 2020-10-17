@@ -4,8 +4,8 @@ prc({
     id: 9,
     data: {
         "languageUsed": "PYTHON3",
-        "submissionId": "lolol",
-        "downloadUrl": "https://firebasestorage.googleapis.com/v0/b/koth-c3d3c.appspot.com/o/sample-stonks.zip?alt=media&token=dbab8bf7-1d6c-4139-9967-dc5648f6d3d3",
+        "submissionId": "629b7016-2e05-425b-93eb-3aff59d145e6",
+        "downloadUrl": "https://koth-submissions.s3.amazonaws.com/629b7016-2e05-425b-93eb-3aff59d145e6?AWSAccessKeyId=AKIAZEU2JOVOIUGXEQTR&Expires=1602915910&Signature=1UowTAs1i8KyFyYSLLvZD8JQrxs%3D",
         "problemId": "stock-prediction",
         "entrypointFile": "main.py"
     },
