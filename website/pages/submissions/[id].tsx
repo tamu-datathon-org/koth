@@ -1,6 +1,5 @@
-import axios from "axios";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, Col, Container, Row, Toast } from "react-bootstrap";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { statusStyleMap } from "../../components/SubmissionsTable";
@@ -9,24 +8,17 @@ import styles from "./[id].module.scss";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { useDocument } from "../../libs/public-firebase";
 
 const DEFAULT_TERMINAL_OUTPUT = `No terminal output.`;
 
-interface SubmissionPageData {
-  submission: Submission;
-}
-
 const SubmissionPage = () => {
   const router = useRouter();
-  const [error, setError] = useState<boolean>(false);
   const [showToast, setShowToast] = useState(false);
   const submissionId = router.query.id as string;
   
   const submission = useDocument<Submission>(`/submissions/${submissionId}`);
 
-  if (error) {
-    return <h1>Something went wrong!</h1>;
-  }
   if (!submission) {
     return LoadingSpinner;
   }
