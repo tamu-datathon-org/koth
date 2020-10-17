@@ -173,7 +173,6 @@ module.exports = async (job: Job<EvaluateSubmissionJob>) => {
     await job.log(finalTermOutput);
     await updateSubmissionDocument(data.submissionId, { termOutput: finalTermOutput, score: finalScore, status: "SUCCESS" });
 
-    rimraf.sync(`work/${data.submissionId}/`);
     await job.progress(100);
   } catch (e) {
     finalTermOutput += e.message;
@@ -183,6 +182,8 @@ module.exports = async (job: Job<EvaluateSubmissionJob>) => {
 
     throw e;
   }
+
+  rimraf.sync(`work/${data.submissionId}`);
   return {
     status: finalScore < 0 ? "ERRORED" : "SUCCESS",
     finalScore,
