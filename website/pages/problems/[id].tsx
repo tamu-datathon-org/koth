@@ -91,8 +91,11 @@ const ProblemPage: React.FC<{}> = () => {
     return LoadingSpinner;
   }
   const { problem, submissions } = data;
-  const sortedSubmissions = submissions.sort((a, b) =>
+  const scoreSortedSubmissions = submissions.sort((a, b) =>
     a.score < b.score ? 1 : -1
+  );
+  const timeSortedSubmissions = submissions.sort((a, b) =>
+    a.creationTimestamp > b.creationTimestamp ? -1 : 1
   );
 
   return (
@@ -122,9 +125,9 @@ const ProblemPage: React.FC<{}> = () => {
       <Row className={`justify-content-center`}>
         <Col sm="auto" className={`text-center ${styles.submissionDetails}`}>
           <Row className={`pb-4 justify-content-between align-items-center`}>
-            {sortedSubmissions.length ? (
+            {scoreSortedSubmissions.length ? (
               <Col sm="auto">
-                Your Highest Score: {sortedSubmissions[0].score}
+                Your Highest Score: {scoreSortedSubmissions[0].score}
               </Col>
             ) : (
               <></>
@@ -140,7 +143,7 @@ const ProblemPage: React.FC<{}> = () => {
             </Col>
           </Row>
           <Row className={`justify-content-between align-items-center`}>
-            <SubmissionsTable submissions={submissions} />
+            <SubmissionsTable submissions={timeSortedSubmissions} />
           </Row>
         </Col>
       </Row>
