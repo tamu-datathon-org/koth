@@ -122,7 +122,7 @@ const ProblemPage: React.FC<{}> = () => {
       <Row className={`justify-content-center`}>
         <Col sm="auto" className={`text-center ${styles.submissionDetails}`}>
           <Row className={`pb-4 justify-content-between align-items-center`}>
-            {sortedSubmissions ? (
+            {sortedSubmissions.length ? (
               <Col sm="auto">
                 Your Highest Score: {sortedSubmissions[0].score}
               </Col>

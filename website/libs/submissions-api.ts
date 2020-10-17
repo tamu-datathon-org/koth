@@ -49,6 +49,7 @@ export const getUserSubmissions = async (
     score: submission.data().score,
     data: submission.data().data,
     creationTimestamp: submission.data().creationTimestamp,
+    termOutput: submission.data().termOutput,
   }));
 };
 
@@ -65,6 +66,7 @@ export const getSubmission = async (
     score: submission.data()?.score,
     data: submission.data()?.data,
     creationTimestamp: submission.data()?.creationTimestamp,
+    termOutput: submission.data()?.termOutput,
   };
 };
 

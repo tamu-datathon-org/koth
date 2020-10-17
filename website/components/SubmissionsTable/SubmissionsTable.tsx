@@ -14,7 +14,7 @@ export const statusStyleMap = (status: SubmissionStatus): any => {
       return styles.inProgress;
     case "SUCCESS":
       return styles.success;
-    case "ERROR":
+    case "FAILED":
       return styles.error;
     default:
       return styles.defaultStatus;

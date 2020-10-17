@@ -8,13 +8,7 @@ import { statusStyleMap } from "../../components/SubmissionsTable";
 import { Submission } from "../../libs/submissions-api";
 import styles from "./[id].module.scss";
 
-const TEST_OUTPUT = `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-
-Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. 
-
-uis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. 
-Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-`;
+const DEFAULT_TERMINAL_OUTPUT = `No terminal output.`;
 
 interface SubmissionPageData {
   submission: Submission;
@@ -62,6 +56,7 @@ const SubmissionPage = () => {
   }
 
   const { submission } = data;
+  console.log(submission);
   return (
     <Container fluid className={styles.submissionsPage}>
       {/* Toast for copying submission link */}
@@ -107,13 +102,22 @@ const SubmissionPage = () => {
             <h5>Problem: {submission.problemId}</h5>
             <h5>Score: {submission.score}</h5>
           </Row>
-          <Row>
+          <Row className={`mb-3`}>
             <h5>Output:</h5>
           </Row>
           <Row>
-            <pre className={`${styles.outputDiv}`} id="terminalOutput">
-              {submission.termOutput|| TEST_OUTPUT}
-            </pre>
+            <div className={styles.terminalDiv}>
+              <div className={styles.terminalHeader}>
+                <div className={`${styles.terminalDot} ${styles.terminalRedDot}`}></div>
+                <div className={`${styles.terminalDot} ${styles.terminalYellowDot}`}></div>
+                <div className={`${styles.terminalDot} ${styles.terminalGreenDot}`}></div>
+              </div>
+              <div>
+                <pre className={`${styles.terminalTextDiv}`} id="terminalOutput">
+                  {submission.termOutput || DEFAULT_TERMINAL_OUTPUT}
+                </pre>
+              </div>
+            </div>
           </Row>
         </Col>
       </Row>

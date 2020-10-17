@@ -35,3 +35,54 @@
     }
   }
 }
+
+.terminalDiv {
+  background-color: #272936;
+  width: 100%;
+  height: 40vh;
+  font-family: monospace;
+  font-size: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.terminalTextDiv {
+  padding: 30px 30px 30px 30px;
+  overflow-y: scroll;
+  color: white;
+}
+
+.terminalHeader {
+  background-color: #e1e1e1;
+}
+
+.terminalDot {
+  width: 15px;
+  height: 15px;
+  border-radius: 100%;
+  margin: 0 auto;
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.terminalRedDot{
+  margin-left: 20px;
+  background-color: #FF605C;
+}
+
+.terminalYellowDot{
+  background-color: #FFBD44;
+}
+
+.terminalGreenDot{
+  background-color: #00CA4E;
+}
+
+.terminalTitle {
+  color: black;
+  padding: 5px auto 5px auto;
+  font-size: 17px;
+  display: inline-block;
+  position: relative;
+  left: 30vw;
+}
