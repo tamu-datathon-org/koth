@@ -5,6 +5,7 @@ COPY ["package.json", "tsconfig.json", "package-lock.json*", "workspace/"]
 COPY ["src/","workspace/src/"]
 
 RUN mkdir dist/
+RUN mkdir /keys
 
 COPY ["dist/", "workspace/"]
 

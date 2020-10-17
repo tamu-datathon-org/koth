@@ -16,11 +16,13 @@ services:
             REDIS_URL: "redis://redis:6379"
             GATEKEEPER_URL: "https://dev.tamudatathon.com/auth"
             STOCK_PROBLEM_TEST_FILE: "/secret/test.csv"
-            HOST_KOTH_WORKER_ROOT: "/Users/george/tamu-datathon/koth/worker" # this will need to be changed per dev and it must be an absolute path
+            HOST_KOTH_WORKER_ROOT: $PWD/worker
+            GOOGLE_APPLICATION_CREDENTIALS: "/keys/firebase-creds.json"
         env_file:
             - ./.env
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - ../test-cases:/secret
+            - ../keys:/keys
         ports:
             - 4000:3000
