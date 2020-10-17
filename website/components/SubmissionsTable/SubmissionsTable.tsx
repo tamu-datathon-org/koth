@@ -48,12 +48,11 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({
         {submissions.map((val, idx) => (
           <tr key={idx}>
             <td>
-              <Button
-                variant="link"
+              <a
                 {...(showSubmissionLinks ? { href: `/koth/submissions/${val.id}` } : {})}
               >
                 {idx + 1}
-              </Button>
+              </a>
             </td>
             <td>{dayjs(val.creationTimestamp).fromNow()}</td>
 

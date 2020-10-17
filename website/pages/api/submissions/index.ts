@@ -38,7 +38,6 @@ const getSubmissionDataHandler = async (
     );
 
     const downloadUrl = await getSignedUrlForSubmissionFile(submissionId, "getObject");
-    console.log(downloadUrl);
 
     await Axios.post(
       `${process.env.WORKER_SPAWNER_URL}/enqueue`,
