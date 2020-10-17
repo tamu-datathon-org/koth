@@ -29,7 +29,6 @@ const ProblemPage: React.FC<{}> = () => {
   const fetchData = async () => {
     if (!problemId) return;
     try {
-      console.log(problemId);
       const problemData = await axios.get(`/koth/api/problems/${problemId}`);
       setData(problemData.data as ProblemPageData);
     } catch (e) {
@@ -143,7 +142,7 @@ const ProblemPage: React.FC<{}> = () => {
             </Col>
           </Row>
           <Row className={`justify-content-between align-items-center`}>
-            <SubmissionsTable submissions={timeSortedSubmissions} />
+            <SubmissionsTable submissions={timeSortedSubmissions} showStatus={true} showSubmissionLinks={true}/>
           </Row>
         </Col>
       </Row>

@@ -24,7 +24,6 @@ const ProblemPage: React.FC<{}> = () => {
   const fetchData = async () => {
     if (!problemId) return;
     try {
-      console.log(problemId);
       const problemData = await axios.get(`/koth/api/leaderboard/${problemId}`);
       setData(problemData.data as ProblemPageData);
     } catch (e) {
