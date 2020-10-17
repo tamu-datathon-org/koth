@@ -9,6 +9,7 @@ export interface SubmissionModalProps {
 
 export interface SubmissionModalOutput {
   submissionFile?: File | null;
+  entrypointFile?: string;
 }
 
 export const SubmissionModal: React.FC<SubmissionModalProps> = ({
@@ -16,7 +17,8 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
   onHide,
   onSubmit,
 }) => {
-  const [output, setOutput] = useState<SubmissionModalOutput>({});
+  const [submissionFile, setSubmissionFile] = useState<File | null>(null);
+  const [entrypointFile, setEntrypointFile] = useState("main.py");
   return (
     <Modal show={show} onHide={onHide}>
       <Modal.Header closeButton>
@@ -28,15 +30,24 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
           <Form.File
             id="submission-file"
             label="Upload your submission file."
+            className={`mb-3`}
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               const submissionFile =
                 e.target.files == null ? null : e.target.files[0];
-              setOutput({
-                submissionFile,
-                ...output,
-              });
+              setSubmissionFile(submissionFile);
             }}
           />
+
+          <Form.Group controlId="formEntrypointFile">
+            <Form.Label>Please enter the entrypoint file:</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="main.py"
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                setEntrypointFile(e.target.value);
+              }}
+            />
+          </Form.Group>
         </Form>
       </Container>
 
@@ -46,7 +57,7 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
         </Button>
         <Button
           variant="primary"
-          onClick={() => onSubmit(output)}
+          onClick={() => onSubmit({ submissionFile, entrypointFile })}
           style={{ backgroundColor: "#7c408a" }}
         >
           Submit

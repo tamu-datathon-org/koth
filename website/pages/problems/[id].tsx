@@ -41,11 +41,16 @@ const ProblemPage: React.FC<{}> = () => {
   }, [problemId]);
 
   // Call this after uploading submission file.
-  const createSubmission = async (submissionId: string) => {
+  const createSubmission = async (
+    submissionId: string,
+    submissionData: SubmissionModalOutput
+  ) => {
     try {
+      console.log(submissionData);
       await axios.post("/koth/api/submissions", {
         id: submissionId,
         problemId,
+        entrypointFile: submissionData.entrypointFile || "main.py",
       });
       router.push(`/submissions/${submissionId}`);
     } catch (e) {
@@ -55,6 +60,7 @@ const ProblemPage: React.FC<{}> = () => {
   };
 
   const submissionHandler = async (data: SubmissionModalOutput) => {
+    console.log(data);
     let { submissionFile } = data;
     try {
       const signedUrlResp = await axios.get("/koth/api/submission-signed-url");
@@ -76,7 +82,7 @@ const ProblemPage: React.FC<{}> = () => {
           "x-amz-acl": "public-read",
         },
       });
-      await createSubmission(id);
+      await createSubmission(id, data);
     } catch (e) {
       console.log(e);
       setError(true);
@@ -90,12 +96,12 @@ const ProblemPage: React.FC<{}> = () => {
     return LoadingSpinner;
   }
   const { problem, submissions } = data;
-  const scoreSortedSubmissions = submissions.sort((a, b) =>
-    a.score < b.score ? 1 : -1
-  );
-  const timeSortedSubmissions = submissions.sort((a, b) =>
-    a.creationTimestamp > b.creationTimestamp ? -1 : 1
-  );
+  const scoreSortedSubmissions = submissions
+    .slice()
+    .sort((a, b) => (a.score <= b.score ? 1 : -1));
+  const timeSortedSubmissions = submissions
+    .slice()
+    .sort((a, b) => (a.creationTimestamp >= b.creationTimestamp ? -1 : 1));
 
   return (
     <Container fluid className={styles.problemPage}>
@@ -120,6 +126,16 @@ const ProblemPage: React.FC<{}> = () => {
         ) : (
           <></>
         )}
+        <p>
+          <Button
+            variant="outline-primary"
+            href={`/koth/leaderboard/${problemId}`}
+            target="_blank"
+            className={`${styles.btn} ${styles.detailsBtn}`}
+          >
+            Leaderboard
+          </Button>
+        </p>
       </Row>
       <Row className={`justify-content-center`}>
         <Col sm="auto" className={`text-center ${styles.submissionDetails}`}>
@@ -142,7 +158,11 @@ const ProblemPage: React.FC<{}> = () => {
             </Col>
           </Row>
           <Row className={`justify-content-between align-items-center`}>
-            <SubmissionsTable submissions={timeSortedSubmissions} showStatus={true} showSubmissionLinks={true}/>
+            <SubmissionsTable
+              submissions={timeSortedSubmissions}
+              showStatus={true}
+              showSubmissionLinks={true}
+            />
           </Row>
         </Col>
       </Row>

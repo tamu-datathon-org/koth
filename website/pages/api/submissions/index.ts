@@ -2,7 +2,11 @@ import { NowRequest, NowResponse } from "@vercel/node";
 import Axios from "axios";
 import { User } from "../../../components/UserProvider";
 import { authenticatedRoute } from "../../../libs/middleware";
-import { createSubmission, getSignedUrlForSubmissionFile, getSubmission } from "../../../libs/submissions-api";
+import {
+  createSubmission,
+  getSignedUrlForSubmissionFile,
+  getSubmission,
+} from "../../../libs/submissions-api";
 
 const getSubmissionDataHandler = async (
   req: NowRequest,
@@ -12,19 +16,14 @@ const getSubmissionDataHandler = async (
   try {
     if (req.method !== "POST") return;
 
-    if (
-      !req.body ||
-      !req.body.id ||
-      !req.body.problemId
-    ) {
+    if (!req.body || !req.body.id || !req.body.problemId) {
       res.status(400).json({
-        err:
-          "The request body must contain id (submission ID), problemId",
+        err: "The request body must contain id (submission ID), problemId",
       });
       return;
     }
 
-    const { id: submissionId, problemId } = req.body;
+    const { id: submissionId, problemId, entrypointFile } = req.body;
 
     const submissionExistsCheck = await getSubmission(submissionId);
     if (submissionExistsCheck) {
@@ -37,13 +36,19 @@ const getSubmissionDataHandler = async (
       user.authId
     );
 
-    const downloadUrl = await getSignedUrlForSubmissionFile(submissionId, "getObject");
+    const downloadUrl = await getSignedUrlForSubmissionFile(
+      submissionId,
+      "getObject"
+    );
+
+    console.log("ENTRYPOINT FILE:")
+    console.log(entrypointFile);
 
     await Axios.post(
       `${process.env.WORKER_SPAWNER_URL}/enqueue`,
       {
         languageUsed: "PYTHON3",
-        entrypointFile: "main.py",
+        entrypointFile: entrypointFile || "main.py",
         problemId,
         submissionId,
         downloadUrl,

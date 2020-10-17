@@ -23,7 +23,6 @@ const SubmissionPage = () => {
     return LoadingSpinner;
   }
 
-  console.log(submission);
   return (
     <Container fluid className={styles.submissionsPage}>
       {/* Toast for copying submission link */}
