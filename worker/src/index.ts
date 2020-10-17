@@ -17,7 +17,7 @@ const processQueue = new Queue<EvaluateSubmissionJob>("code evaluator", redisUrl
 setQueues(processQueue);
 
 // setup concurrency of 1 and set process file to "process.js"
-processQueue.process(1, process.cwd() + "/dist/process.js");
+processQueue.process(8, process.cwd() + "/dist/process.js");
 
 app.use(express.json());
 
