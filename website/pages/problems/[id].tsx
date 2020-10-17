@@ -3,6 +3,10 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
+import {
+  SubmissionModal,
+  SubmissionModalOutput,
+} from "../../components/SubmissionModal";
 import { SubmissionsTable } from "../../components/SubmissionsTable";
 import { Problem } from "../../libs/problems-api";
 import { Submission } from "../../libs/submissions-api";
@@ -16,6 +20,9 @@ interface ProblemPageData {
 const ProblemPage: React.FC<{}> = () => {
   const router = useRouter();
   const [data, setData] = useState<ProblemPageData | null>(null);
+  const [showSubmissionModal, setShowSubmissionModal] = useState<boolean>(
+    false
+  );
   const [error, setError] = useState<boolean>(false);
   const problemId = router.query.id as string;
 
@@ -94,7 +101,11 @@ const ProblemPage: React.FC<{}> = () => {
               Your Highest Score: {sortedSubmissions[0].score}
             </Col>
             <Col sm="auto">
-              <Button variant="outline-primary" className={`${styles.btn}`}>
+              <Button
+                variant="outline-primary"
+                className={`${styles.btn}`}
+                onClick={() => setShowSubmissionModal(true)}
+              >
                 Add New Submission
               </Button>
             </Col>
@@ -104,6 +115,14 @@ const ProblemPage: React.FC<{}> = () => {
           </Row>
         </Col>
       </Row>
+      <SubmissionModal
+        show={showSubmissionModal}
+        onHide={() => setShowSubmissionModal(false)}
+        onSubmit={(submissionData: SubmissionModalOutput) => {
+          console.log(submissionData);
+          // TODO: Call submission API and stuff.
+        }}
+      />
     </Container>
   );
 };

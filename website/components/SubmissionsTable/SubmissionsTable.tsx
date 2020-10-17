@@ -3,7 +3,7 @@ import React from "react";
 import { Button, Table } from "react-bootstrap";
 import { Submission } from "../../libs/submissions-api";
 import styles from "./submissions-table.module.scss";
-const relativeTime = require("dayjs/plugin/relativeTime");
+import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
 const statusStyleMap = (status: string): any => {
@@ -44,7 +44,7 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({
       </thead>
       <tbody>
         {sortedSubmissions.map((val, idx) => (
-          <tr>
+          <tr key={idx}>
             <td>
               <Button
                 target="_blank"
