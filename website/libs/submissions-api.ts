@@ -16,7 +16,7 @@ export type SubmissionStatus =
   | "SUBMITTED"
   | "IN_PROGRESS"
   | "SUCCESS"
-  | "ERROR";
+  | "FAILED";
 
 export interface Submission {
   id: string;
