@@ -4,11 +4,13 @@ import { firebaseBucket } from "./firebase";
 const SUBMISSIONS_COLLECTION =
     process.env.DB_SUBMISSIONS_COLLECTION || "submissions";
 
+export type SubmissionStatus = "SUBMITTED" | "IN_PROGRESS" | "SUCCESS" | "ERROR"
+
 export interface Submission {
     id: string;
     userAuthId: string;
     problemId: string;
-    status: string;
+    status: SubmissionStatus;
     score: number;
     creationTimestamp: number;
     data?: any;
