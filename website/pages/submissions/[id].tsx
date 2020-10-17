@@ -1,7 +1,6 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Terminal } from "xterm";
 import { Button, Col, Container, Row, Toast } from "react-bootstrap";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { statusStyleMap } from "../../components/SubmissionsTable";
@@ -21,7 +20,6 @@ const SubmissionPage = () => {
   const router = useRouter();
   const [data, setData] = useState<SubmissionPageData | null>(null);
   const [error, setError] = useState<boolean>(false);
-  const [terminal, setTerminal] = useState<Terminal | null>(null);
   const [showToast, setShowToast] = useState(false);
   const submissionId = router.query.id as string;
 
@@ -30,11 +28,6 @@ const SubmissionPage = () => {
     try {
       const resp = await axios.get(`/koth/api/submissions/${submissionId}`);
       const data = resp.data as SubmissionPageData;
-
-      // const terminalOutput = data.submission.data?.output || TEST_OUTPUT;
-      // terminal?.reset();
-      // terminal?.write(terminalOutput);
-
       setData(data);
     } catch (e) {
       setError(true);
@@ -43,13 +36,6 @@ const SubmissionPage = () => {
   useEffect(() => {
     fetchData();
   }, [submissionId]);
-
-  // Initialize terminal.
-  // useEffect(() => {
-  //   const terminal = new Terminal();
-  //   terminal.open(document.getElementById("terminalOutput")!);
-  //   setTerminal(terminal);
-  // }, []);
 
   if (error) {
     return <h1>Something went wrong!</h1>;

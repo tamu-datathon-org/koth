@@ -1,6 +1,6 @@
 import { NowResponse, NowRequest } from "@vercel/node";
 import { User, GatekeeperRequestError } from "../components/UserProvider";
-import { getBaseUrl, authenticatedFetch } from "./fetcher";
+import { authenticatedFetch } from "./fetcher";
 
 type AuthenticatedRouteHandler = (
   req: NowRequest,
