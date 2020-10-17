@@ -1,6 +1,6 @@
 import dayjs from "dayjs";
 import React from "react";
-import { Button, Table } from "react-bootstrap";
+import { Table } from "react-bootstrap";
 import { Submission, SubmissionStatus } from "../../libs/submissions-api";
 import styles from "./submissions-table.module.scss";
 import relativeTime from "dayjs/plugin/relativeTime";
