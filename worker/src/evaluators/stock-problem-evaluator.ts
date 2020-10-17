@@ -90,6 +90,7 @@ export class StockProblemEvaluator extends Evaluator {
                 throw new Error("Illegal Fraction Value (needs to be between 0 and 1 inclusive). The SEC is not happy.");
             }
             this.cash += frac * this.numberOfShares * rowOpen;
+            this.numberOfShares += frac * this.numberOfShares;
             this.numSells += 1
         } else if (action === "HOLD") {
             this.numHolds += 1;
