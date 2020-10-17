@@ -23,39 +23,46 @@ export const statusStyleMap = (status: SubmissionStatus): any => {
 
 export interface SubmissionsTableProps {
   submissions: Submission[];
+  showStatus?: boolean;
+  showSubmissionLinks?: boolean;
 }
 
 export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({
   submissions,
+  showStatus,
+  showSubmissionLinks,
 }) => {
-  const sortedSubmissions = submissions.sort((a, b) =>
-    a.creationTimestamp > b.creationTimestamp ? -1 : 1
-  );
-
   return (
     <Table striped bordered>
       <thead>
         <tr>
           <th>#</th>
           <th>Submission Time</th>
-          <th>Status</th>
+
+          {showStatus ? <th>Status</th> : <></>}
+
           <th>Score</th>
         </tr>
       </thead>
       <tbody>
-        {sortedSubmissions.map((val, idx) => (
+        {submissions.map((val, idx) => (
           <tr key={idx}>
             <td>
               <Button
-                target="_blank"
-                href={`/koth/submissions/${val.id}`}
                 variant="link"
+                {...(showSubmissionLinks ? { href: `/koth/submissions/${val.id}` } : {})}
               >
                 {idx + 1}
               </Button>
             </td>
             <td>{dayjs(val.creationTimestamp).fromNow()}</td>
-            <td className={statusStyleMap(val.status)}>{val.status}</td>
+
+            {showStatus ? (
+              <td className={statusStyleMap(val.status)}>{val.status}</td>
+            ) : (
+              <></>
+            )}
+
             <td>{val.score}</td>
           </tr>
         ))}

@@ -16,7 +16,7 @@ export type SubmissionStatus =
   | "SUBMITTED"
   | "IN_PROGRESS"
   | "SUCCESS"
-  | "ERROR";
+  | "FAILED";
 
 export interface Submission {
   id: string;
@@ -28,6 +28,25 @@ export interface Submission {
   data?: any;
   termOutput?: string;
 }
+
+const createSubmissionObject = (data: any) => ({
+  id: data.data()?.id,
+  userAuthId: data.data()?.userAuthId,
+  problemId: data.data()?.problemId,
+  status: data.data()?.status,
+  score: data.data()?.score,
+  data: data.data()?.data,
+  creationTimestamp: data.data()?.creationTimestamp,
+  termOutput: data.data()?.termOutput,
+});
+
+// TODO: Scrub userAuthIds from submissions.
+export const getSubmissionsForProblem = async (problemId: string) =>
+  (
+    await getCollection(SUBMISSIONS_COLLECTION)
+      .where("problemId", "==", problemId)
+      .get()
+  ).docs.map(createSubmissionObject);
 
 export const getUserSubmissions = async (
   userAuthId: string,
@@ -41,16 +60,7 @@ export const getUserSubmissions = async (
     query = query.where("status", "in", ["SUCCESS", "ERROR"]);
   }
   const submissions = await query.get();
-  return submissions.docs.map((submission) => ({
-    id: submission.id,
-    userAuthId: submission.data().userAuthId,
-    problemId: submission.data().problemId,
-    status: submission.data().status,
-    score: submission.data().score,
-    data: submission.data().data,
-    creationTimestamp: submission.data().creationTimestamp,
-    termOutput: submission.data().termOutput,
-  }));
+  return submissions.docs.map(createSubmissionObject);
 };
 
 export const getSubmission = async (
@@ -58,16 +68,7 @@ export const getSubmission = async (
 ): Promise<Submission | null> => {
   let submission = await getDoc(SUBMISSIONS_COLLECTION, submissionId);
   if (!submission.data()) return null;
-  return {
-    id: submissionId,
-    userAuthId: submission.data()?.userAuthId,
-    problemId: submission.data()?.problemId,
-    status: submission.data()?.status,
-    score: submission.data()?.score,
-    data: submission.data()?.data,
-    creationTimestamp: submission.data()?.creationTimestamp,
-    termOutput: submission.data()?.termOutput,
-  };
+  return createSubmissionObject(submission);
 };
 
 export const createSubmission = async (

@@ -43,12 +43,12 @@
   font-family: monospace;
   font-size: 20px;
   border-radius: 10px;
-  overflow: hidden;
 }
 
 .terminalTextDiv {
   padding: 30px 30px 30px 30px;
-  overflow-y: scroll;
+  overflow-y: auto;
+  overflow-x: auto;
   color: white;
 }
 

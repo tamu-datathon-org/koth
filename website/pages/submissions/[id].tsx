@@ -1,13 +1,15 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Terminal } from "xterm";
 import { Button, Col, Container, Row, Toast } from "react-bootstrap";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { statusStyleMap } from "../../components/SubmissionsTable";
 import { Submission } from "../../libs/submissions-api";
 import styles from "./[id].module.scss";
-import { firestore } from "../../libs/public-firebase";
+import { useDocument } from "../../libs/public-firebase";
+import dayjs from "dayjs";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const DEFAULT_TERMINAL_OUTPUT = `No terminal output.`;
 
@@ -19,7 +21,6 @@ const SubmissionPage = () => {
   const router = useRouter();
   const [data, setData] = useState<SubmissionPageData | null>(null);
   const [error, setError] = useState<boolean>(false);
-  const [terminal, setTerminal] = useState<Terminal | null>(null);
   const [showToast, setShowToast] = useState(false);
   const submissionId = router.query.id as string;
 
@@ -28,11 +29,6 @@ const SubmissionPage = () => {
     try {
       const resp = await axios.get(`/koth/api/submissions/${submissionId}`);
       const data = resp.data as SubmissionPageData;
-
-      // const terminalOutput = data.submission.data?.output || TEST_OUTPUT;
-      // terminal?.reset();
-      // terminal?.write(terminalOutput);
-
       setData(data);
     } catch (e) {
       setError(true);
@@ -41,13 +37,6 @@ const SubmissionPage = () => {
   useEffect(() => {
     fetchData();
   }, [submissionId]);
-
-  // Initialize terminal.
-  // useEffect(() => {
-  //   const terminal = new Terminal();
-  //   terminal.open(document.getElementById("terminalOutput")!);
-  //   setTerminal(terminal);
-  // }, []);
 
   if (error) {
     return <h1>Something went wrong!</h1>;
@@ -79,6 +68,14 @@ const SubmissionPage = () => {
       </Toast>
       <Row className="justify-content-center ">
         <Col sm="auto" className={styles.submissionContainer}>
+          <Row className="mb-3">
+            <a href={`/koth/problems/${submission.problemId}`}>
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                style={{fontSize: 25}}
+              />
+            </a>
+          </Row>
           <Row className="mb-4 justify-content-between align-items-center">
             <Button
               variant="outline-primary"
@@ -89,6 +86,10 @@ const SubmissionPage = () => {
             >
               Copy Submission Link
             </Button>
+            <h6>{dayjs(submission.creationTimestamp).fromNow()}</h6>
+          </Row>
+          <Row className={`mb-3 justify-content-between align-items-center`}>
+            <h2>Your Submission</h2>
             <h5>
               Status:{" "}
               <span className={statusStyleMap(submission.status)}>
@@ -96,25 +97,31 @@ const SubmissionPage = () => {
               </span>
             </h5>
           </Row>
-          <Row className={`mb-3`}>
-            <h1>Your Submission</h1>
-          </Row>
-          <Row className={`mb-3 justify-content-between`}>
+          <Row className={`mb-3 justify-content-between align-items-center`}>
             <h5>Problem: {submission.problemId}</h5>
             <h5>Score: {submission.score}</h5>
           </Row>
-          <Row className={`mb-3`}>
+          <Row className={`mb-3 align-items-center`}>
             <h5>Output:</h5>
           </Row>
           <Row>
             <div className={styles.terminalDiv}>
               <div className={styles.terminalHeader}>
-                <div className={`${styles.terminalDot} ${styles.terminalRedDot}`}></div>
-                <div className={`${styles.terminalDot} ${styles.terminalYellowDot}`}></div>
-                <div className={`${styles.terminalDot} ${styles.terminalGreenDot}`}></div>
+                <div
+                  className={`${styles.terminalDot} ${styles.terminalRedDot}`}
+                ></div>
+                <div
+                  className={`${styles.terminalDot} ${styles.terminalYellowDot}`}
+                ></div>
+                <div
+                  className={`${styles.terminalDot} ${styles.terminalGreenDot}`}
+                ></div>
               </div>
               <div>
-                <pre className={`${styles.terminalTextDiv}`} id="terminalOutput">
+                <pre
+                  className={`${styles.terminalTextDiv}`}
+                  id="terminalOutput"
+                >
                   {submission.termOutput || DEFAULT_TERMINAL_OUTPUT}
                 </pre>
               </div>
