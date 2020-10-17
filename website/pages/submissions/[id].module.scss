@@ -1,0 +1,37 @@
+.submissionsPage {
+  background-color: #eafae8;
+  padding-top: 15vh;
+  min-height: 100%;
+  height: 100% !important;
+
+  .submissionContainer {
+    width: 50vw;
+  }
+
+  .outputDiv {
+    height: 30vh;
+    background: grey;
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+    overflow-y: auto;
+  }
+
+  .btn {
+    background-color: transparent;
+    color: #7c408a;
+    cursor: pointer;
+    padding: 0.25em 1em;
+    margin-right: 0.5em;
+    text-align: center;
+    border: solid #7c408a 2px;
+    border-radius: 5px;
+    transition: background-color 0.25s ease, border 0.25s ease;
+
+    &:active:focus {
+      background-color: #7c408a;
+      color: white;
+      outline: none;
+    }
+  }
+}

@@ -1,17 +1,19 @@
-import { getCollection, getDoc } from "./firestore";
+import { getCollection, getDoc, setDoc } from "./firestore";
 import { firebaseBucket } from "./firebase";
 
 const SUBMISSIONS_COLLECTION =
     process.env.DB_SUBMISSIONS_COLLECTION || "submissions";
 
+export type SubmissionStatus = "SUBMITTED" | "IN_PROGRESS" | "SUCCESS" | "ERROR"
+
 export interface Submission {
     id: string;
     userAuthId: string;
     problemId: string;
-    status: string;
-    score?: number;
+    status: SubmissionStatus;
+    score: number;
+    creationTimestamp: number;
     data?: any;
-    creationTimestamp?: number;
 }
 
 export const getUserSubmissions = async (
@@ -52,6 +54,19 @@ export const getSubmission = async (
       creationTimestamp: submission.data()?.creationTimestamp,
   }
 };
+
+export const createSubmission = async (id: string, problemId: string, userAuthId: string): Promise<Submission> => {
+    const submission: Submission = {
+        id,
+        problemId,
+        userAuthId,
+        status: "SUBMITTED",
+        score: 0,
+        creationTimestamp: Date.now()
+    };
+    await setDoc(SUBMISSIONS_COLLECTION, id, submission);
+    return submission;
+}
 
 export const getSignedUrlForSubmissionFile = (fileName: string) =>
   firebaseBucket.file(`${SUBMISSIONS_COLLECTION}/${fileName}`).getSignedUrl({

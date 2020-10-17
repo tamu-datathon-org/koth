@@ -8,9 +8,9 @@ const getSubmissionSignedUrlHandler = async (
   res: NowResponse
 ): Promise<void> => {
   try {
-    const fileName = uuid();
-    const url = await getSignedUrlForSubmissionFile(fileName);
-    res.status(200).json({ url });
+    const id = uuid();
+    const url = await getSignedUrlForSubmissionFile(id);
+    res.status(200).json({ url, id });
   } catch (e) {
     console.log(e);
     res.status(500).send("Something went wrong");

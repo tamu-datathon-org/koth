@@ -7,3 +7,6 @@ export const getCollection = (collection: string) =>
 
 export const getDoc = async (collection: string, docId: string) =>
   firestore.collection(collection).doc(docId).get();
+
+export const setDoc = async (collection: string, id: string, data: any) =>
+  firestore.collection(collection).doc(id).set(data);
