@@ -6,6 +6,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { statusStyleMap } from "../../components/SubmissionsTable";
 import { Submission } from "../../libs/submissions-api";
 import styles from "./[id].module.scss";
+import { useDocument } from "../../libs/public-firebase";
 import dayjs from "dayjs";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";

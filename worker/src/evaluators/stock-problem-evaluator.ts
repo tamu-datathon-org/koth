@@ -77,13 +77,19 @@ export class StockProblemEvaluator extends Evaluator {
         if (action === "BUY") {
             if (!frac)
                 throw new Error("Did not output a frac along side the BUY action: " + JSON.stringify(splitOutput));
+            if (frac < 0 || frac > 1) {
+                throw new Error("Illegal Fraction Value (needs to be between 0 and 1 inclusive). The SEC is not happy.");
+            }
             this.numberOfShares += frac * this.cash / rowOpen;
             this.cash -= frac * this.cash;
             this.numBuys += 1;
         } else if (action === "SELL") {
             if (!frac)
                 throw new Error("Did not output a frac along side the SELL action: " + JSON.stringify(splitOutput));
-            this.cash += Math.floor(frac * this.numberOfShares) * rowOpen;
+            if (frac < 0 || frac > 1) {
+                throw new Error("Illegal Fraction Value (needs to be between 0 and 1 inclusive). The SEC is not happy.");
+            }
+            this.cash += frac * this.numberOfShares * rowOpen;
             this.numSells += 1
         } else if (action === "HOLD") {
             this.numHolds += 1;
@@ -99,7 +105,7 @@ export class StockProblemEvaluator extends Evaluator {
     }
 
     public getScore() {
-        const lastCloseVal = parseFloat(this.testData[this.testData.length - 2][4]);
+        const lastCloseVal = parseFloat(this.testData[this.testData.length - 1][4]);
         return this.cash + this.numberOfShares * lastCloseVal;
     }
 

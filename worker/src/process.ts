@@ -61,7 +61,13 @@ const evaluateSubmission = async (runtimeCommand: CommandPayload | undefined, jo
         shouldStayAlive = evaluator.onProgramOutput(
           job,
           chunk.toString(),
-          (textToWrite) => childProcess.stdin?.write(textToWrite)
+          (textToWrite) => {
+            try {
+              childProcess.stdin?.write(textToWrite);
+            } catch(e) {
+              console.error(e);
+            }
+          }
         );
       } catch (e) {
         evalError = e;
@@ -87,6 +93,12 @@ const evaluateSubmission = async (runtimeCommand: CommandPayload | undefined, jo
       }
     });
 
+    let stderrBuffer = "";
+    childProcess.stderr?.on('data', (chunk) => {
+      const chunkStr = chunk.toString();
+      stderrBuffer += chunkStr;
+    });
+
     // do this to force evaluator to start outputting to stdin
     onProcessOutputs("");
 
@@ -102,7 +114,7 @@ const evaluateSubmission = async (runtimeCommand: CommandPayload | undefined, jo
         return reject(new Error("Your program exceeded the runtime limit (10sec)..."));
       } else if (code != 0) {
         console.log("on runtime error");
-        return reject(new Error("A runtime error occurred."));
+        return reject(new Error(stderrBuffer));
       } else {
         console.log("on success");
         termOutput += "--hidden output--\n";
@@ -164,7 +176,7 @@ module.exports = async (job: Job<EvaluateSubmissionJob>) => {
     rimraf.sync(`work/${data.submissionId}/`);
     await job.progress(100);
   } catch (e) {
-    finalTermOutput += `\033[31m${e.message}\033[39m`;
+    finalTermOutput += e.message;
     job.log(finalTermOutput);
     await updateSubmissionDocument(data.submissionId, { termOutput: finalTermOutput, score: -1, status: "FAILED" });
     await job.log(e.stack);

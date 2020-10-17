@@ -23,6 +23,7 @@ export const Python3Runner: Runner = {
             "run",
             "--network", "none",
             "-v", `${process.env.HOST_KOTH_WORKER_ROOT}/work/${job.submissionId}:/workspace`,
+            "-w", `/workspace`,
             "-i", TD_PYTHON3_DOCKER_IMAGE_NAME,
             "python3", '-u', `/workspace/${job.entrypointFile}`,
         ]
