@@ -19,33 +19,19 @@ interface SubmissionPageData {
 
 const SubmissionPage = () => {
   const router = useRouter();
-  const [data, setData] = useState<SubmissionPageData | null>(null);
   const [error, setError] = useState<boolean>(false);
   const [showToast, setShowToast] = useState(false);
   const submissionId = router.query.id as string;
-
-  const fetchData = async () => {
-    if (!submissionId) return;
-    try {
-      const resp = await axios.get(`/koth/api/submissions/${submissionId}`);
-      const data = resp.data as SubmissionPageData;
-      setData(data);
-    } catch (e) {
-      setError(true);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, [submissionId]);
+  
+  const submission = useDocument<Submission>(`/submissions/${submissionId}`);
 
   if (error) {
     return <h1>Something went wrong!</h1>;
   }
-  if (!data) {
+  if (!submission) {
     return LoadingSpinner;
   }
 
-  const { submission } = data;
   console.log(submission);
   return (
     <Container fluid className={styles.submissionsPage}>

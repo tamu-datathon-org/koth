@@ -1,6 +1,6 @@
 .submissionsPage {
   background-color: #eafae8;
-  padding-top: 15vh;
+  padding-top: 2rem;
   min-height: 100%;
   height: 100% !important;
 
@@ -39,7 +39,6 @@
 .terminalDiv {
   background-color: #272936;
   width: 100%;
-  height: 40vh;
   font-family: monospace;
   font-size: 20px;
   border-radius: 10px;
@@ -47,6 +46,7 @@
 
 .terminalTextDiv {
   padding: 30px 30px 30px 30px;
+  height: 400px;
   overflow-y: auto;
   overflow-x: auto;
   color: white;

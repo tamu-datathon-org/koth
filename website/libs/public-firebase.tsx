@@ -1,8 +1,8 @@
-import firebase from "firebase";
+import * as firebase from "firebase";
 import { v4 as uuid } from "uuid";
 import React from "react";
 
-firebase.initializeApp({
+const f = firebase.initializeApp({
   apiKey: "AIzaSyAJiP9vUrCgVPoftyvAeBRAyHf5-FKq6c4",
   authDomain: "koth-c3d3c.firebaseapp.com",
   databaseURL: "https://koth-c3d3c.firebaseio.com",
@@ -13,7 +13,7 @@ firebase.initializeApp({
   measurementId: "G-HB42NHK07E"
 }, uuid());
 
-export const firestore = firebase.firestore();
+export const firestore = f.firestore();
 
 
 export const useDocument = <T extends {}>(docPath: string) => {
@@ -21,10 +21,11 @@ export const useDocument = <T extends {}>(docPath: string) => {
 
   React.useEffect(() => {
     const unsub = firestore.doc(docPath).onSnapshot(val => {
+      console.log("here", val.data(), docPath)
       changeData(val.data() as T || undefined);
     });
     return unsub;
-  }, [])
+  }, [docPath])
 
   return data;
 }
