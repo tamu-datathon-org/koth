@@ -1,5 +1,9 @@
 import { getCollection, getDoc } from "./firestore";
-import { firebaseBucket } from "./firebase";
+import { S3 } from 'aws-sdk';
+
+const s3 = new S3({
+  region: "us-east-1"
+})
 
 const SUBMISSIONS_COLLECTION =
     process.env.DB_SUBMISSIONS_COLLECTION || "submissions";
@@ -54,7 +58,16 @@ export const getSubmission = async (
 };
 
 export const getSignedUrlForSubmissionFile = (fileName: string) =>
-  firebaseBucket.file(`${SUBMISSIONS_COLLECTION}/${fileName}`).getSignedUrl({
-    action: "write",
-    expires: Date.now() + 1000 * 60 * 5, // Signed URL expires in 5 minutes
-  });
+  new Promise((resolve, reject) => s3.createPresignedPost({
+    Bucket: "koth-submissions",
+    Fields: {
+      key: fileName
+    },
+    Expires: 600,
+    Conditions: [
+      ['content-length-range', 0, 5000000] // 5 MB
+    ]
+  }, ((err, data) => {
+    if (err) return reject(err);
+    return resolve(data);
+  })))
