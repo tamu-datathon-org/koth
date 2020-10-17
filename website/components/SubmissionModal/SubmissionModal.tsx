@@ -42,7 +42,7 @@ export const SubmissionModal: React.FC<SubmissionModalProps> = ({
       </Container>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={onHide}>
+        <Button variant="outline-secondary" onClick={onHide}>
           Close
         </Button>
         <Button

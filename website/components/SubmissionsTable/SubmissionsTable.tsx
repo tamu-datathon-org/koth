@@ -1,12 +1,12 @@
 import * as dayjs from "dayjs";
 import React from "react";
 import { Button, Table } from "react-bootstrap";
-import { Submission } from "../../libs/submissions-api";
+import { Submission, SubmissionStatus } from "../../libs/submissions-api";
 import styles from "./submissions-table.module.scss";
 import relativeTime from "dayjs/plugin/relativeTime";
 dayjs.extend(relativeTime);
 
-const statusStyleMap = (status: string): any => {
+export const statusStyleMap = (status: SubmissionStatus): any => {
   switch (status) {
     case "SUBMITTED":
       return styles.submitted;
