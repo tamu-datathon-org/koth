@@ -17,11 +17,12 @@ services:
             GATEKEEPER_URL: "https://dev.tamudatathon.com/auth"
             STOCK_PROBLEM_TEST_FILE: "/secret/test.csv"
             HOST_KOTH_WORKER_ROOT: "$PWD/worker"
-            GOOGLE_APPLICATION_CREDENTIALS: "/home/ec2-user/firebase-creds.json"
+            GOOGLE_APPLICATION_CREDENTIALS: "/keys/firebase-creds.json"
         env_file:
             - ./.env
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - ../test-cases:/secret
+            - $GOOGLE_APPLICATION_CREDENTIALS/keys:/keys
         ports:
             - 4000:3000
