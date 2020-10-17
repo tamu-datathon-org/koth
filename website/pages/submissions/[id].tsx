@@ -7,6 +7,7 @@ import { LoadingSpinner } from "../../components/LoadingSpinner";
 import { statusStyleMap } from "../../components/SubmissionsTable";
 import { Submission } from "../../libs/submissions-api";
 import styles from "./[id].module.scss";
+import { firestore } from "../../libs/public-firebase";
 
 const DEFAULT_TERMINAL_OUTPUT = `No terminal output.`;
 
