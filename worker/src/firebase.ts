@@ -8,7 +8,7 @@ const firebaseCreds = {
 
 export const firebase = Firebase.initializeApp(
   {
-    credential: Firebase.credential.cert(firebaseCreds),
+    credential: Firebase.credential.applicationDefault(),
     storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
   }
 );
