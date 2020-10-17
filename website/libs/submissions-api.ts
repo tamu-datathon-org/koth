@@ -1,4 +1,4 @@
-import { getCollection, getDoc } from "./firestore";
+import { getCollection, getDoc, setDoc } from "./firestore";
 import { S3 } from 'aws-sdk';
 
 const s3 = new S3({
@@ -13,9 +13,9 @@ export interface Submission {
     userAuthId: string;
     problemId: string;
     status: string;
-    score?: number;
+    score: number;
+    creationTimestamp: number;
     data?: any;
-    creationTimestamp?: number;
 }
 
 export const getUserSubmissions = async (
@@ -56,6 +56,19 @@ export const getSubmission = async (
       creationTimestamp: submission.data()?.creationTimestamp,
   }
 };
+
+export const createSubmission = async (id: string, problemId: string, userAuthId: string): Promise<Submission> => {
+    const submission: Submission = {
+        id,
+        problemId,
+        userAuthId,
+        status: "SUBMITTED",
+        score: 0,
+        creationTimestamp: Date.now()
+    };
+    await setDoc(SUBMISSIONS_COLLECTION, id, submission);
+    return submission;
+}
 
 export const getSignedUrlForSubmissionFile = (fileName: string) =>
   new Promise((resolve, reject) => s3.createPresignedPost({
