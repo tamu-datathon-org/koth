@@ -17,8 +17,20 @@ const getProblemDataHandler = async (
     return;
   }
   const submissions = await getSubmissionsForProblem(problemId);
+  // Sort by score - descending order.
+  const sortedSubmissions = submissions.sort((a, b) =>
+    a.score < b.score ? 1 : -1
+  );
+  let userAuthIdSet = new Set();
+  const filteredSubmissions = sortedSubmissions.filter((val) => {
+    if (userAuthIdSet.has(val.userAuthId)) {
+      return false;
+    }
+    userAuthIdSet.add(val.userAuthId);
+    return true;
+  });
 
-  res.status(200).json({ problem, submissions });
+  res.status(200).json({ problem, submissions: filteredSubmissions });
   return;
 };
 

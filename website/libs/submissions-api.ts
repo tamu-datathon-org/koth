@@ -41,7 +41,7 @@ const createSubmissionObject = (data: any) => ({
 });
 
 // TODO: Scrub userAuthIds from submissions.
-export const getSubmissionsForProblem = async (problemId: string) =>
+export const getSubmissionsForProblem = async (problemId: string): Promise<Submission[]> =>
   (
     await getCollection(SUBMISSIONS_COLLECTION)
       .where("problemId", "==", problemId)

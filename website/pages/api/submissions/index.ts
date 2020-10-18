@@ -41,8 +41,7 @@ const getSubmissionDataHandler = async (
       "getObject"
     );
 
-    console.log("ENTRYPOINT FILE:")
-    console.log(entrypointFile);
+    console.log(downloadUrl);
 
     await Axios.post(
       `${process.env.WORKER_SPAWNER_URL}/enqueue`,

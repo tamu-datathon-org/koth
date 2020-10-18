@@ -42,18 +42,20 @@ const LeaderboardPage: React.FC<{}> = () => {
     return LoadingSpinner;
   }
   const { problem, submissions } = data;
-  const scoreSortedSubmissions = submissions
+  // Submissions from leaderboard endpoint are pre-sorted.
+  const scoreSortedUserSubmissions = submissions
     .slice()
-    .sort((a, b) => (a.score < b.score ? 1 : -1));
+    .filter((submission) => submission.userAuthId === user?.authId);
 
-  const scoreSortedUserSubmissions = scoreSortedSubmissions.filter(
-    (submission) => submission.userAuthId === user?.authId
-  );
+  const failFilteredSubmissions = submissions
+    .slice()
+    .filter((val) => val.score > 0);
 
-  const topUserRank =
-    scoreSortedSubmissions
-      .map((val) => val.id)
-      .indexOf(scoreSortedUserSubmissions[0].id) + 1;
+  const topUserRank = scoreSortedUserSubmissions.length
+    ? submissions
+        .map((val) => val.id)
+        .indexOf(scoreSortedUserSubmissions[0].id) + 1
+    : null;
 
   return (
     <Container fluid className={styles.problemPage}>
@@ -66,7 +68,8 @@ const LeaderboardPage: React.FC<{}> = () => {
             {scoreSortedUserSubmissions.length ? (
               <>
                 <h5>
-                  Your Highest Score: {scoreSortedUserSubmissions[0].score}{" "}
+                  Your Highest Score:{" "}
+                  {Number(scoreSortedUserSubmissions[0].score).toFixed(2)}{" "}
                 </h5>
                 <h5>Rank #{topUserRank}</h5>
               </>
@@ -86,7 +89,7 @@ const LeaderboardPage: React.FC<{}> = () => {
           </Row>
           <Row className={`justify-content-between align-items-center`}>
             <SubmissionsTable
-              submissions={scoreSortedSubmissions}
+              submissions={failFilteredSubmissions}
               showStatus={false}
             />
           </Row>
