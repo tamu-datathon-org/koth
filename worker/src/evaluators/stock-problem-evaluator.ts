@@ -100,7 +100,7 @@ export class StockProblemEvaluator extends Evaluator {
             this.currentRow -= 1;
         }
         
-        if (this.currentRow >= this.testData.length)
+        if (this.currentRow >= this.testData.length - 1)
             return false;
         return true;
     }
