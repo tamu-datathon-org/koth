@@ -72,7 +72,7 @@ export class StockProblemEvaluator extends Evaluator {
 
         // the output from the program is a reaction to the last writeToInput
         const lastRowIndex = this.currentRow - 1;
-        const rowOpen = parseFloat(this.testData[lastRowIndex][1]);
+        const rowOpen = parseFloat(this.testData[lastRowIndex][0]);
 
         if (action === "BUY") {
             if (!frac)
@@ -106,7 +106,7 @@ export class StockProblemEvaluator extends Evaluator {
     }
 
     public getScore() {
-        const lastCloseVal = parseFloat(this.testData[this.testData.length - 1][4]);
+        const lastCloseVal = parseFloat(this.testData[this.testData.length - 1][3]);
         return this.cash + this.numberOfShares * lastCloseVal;
     }
 
