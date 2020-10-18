@@ -23,6 +23,13 @@ const getSubmissionDataHandler = async (
       return;
     }
 
+    if (new Date().getTime() > new Date("October 18th 11:03:00-500").getTime()) {
+      res.status(400).json({
+        err: "Sorry! The market has closed! Thanks for playing!",
+      });
+      return;
+    }
+
     const { id: submissionId, problemId, entrypointFile } = req.body;
 
     const submissionExistsCheck = await getSubmission(submissionId);
