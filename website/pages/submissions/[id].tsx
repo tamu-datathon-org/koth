@@ -75,7 +75,7 @@ const SubmissionPage = () => {
           </Row>
           <Row className={`mb-3 justify-content-between align-items-center`}>
             <h5>Problem: {submission.problemId}</h5>
-            <h5>Score: {submission.score}</h5>
+            <h5>Score: {Number(submission.score).toFixed(2)}</h5>
           </Row>
           <Row className={`mb-3 align-items-center`}>
             <h5>Output:</h5>

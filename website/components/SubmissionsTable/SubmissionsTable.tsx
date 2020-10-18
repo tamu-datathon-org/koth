@@ -62,7 +62,7 @@ export const SubmissionsTable: React.FC<SubmissionsTableProps> = ({
               <></>
             )}
 
-            <td>{val.score}</td>
+            <td>{Number(val.score).toFixed(2)}</td>
           </tr>
         ))}
       </tbody>

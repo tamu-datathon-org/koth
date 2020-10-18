@@ -142,7 +142,8 @@ const ProblemPage: React.FC<{}> = () => {
           <Row className={`pb-4 justify-content-between align-items-center`}>
             {scoreSortedSubmissions.length ? (
               <Col sm="auto">
-                Your Highest Score: {scoreSortedSubmissions[0].score}
+                Your Highest Score:{" "}
+                {Number(scoreSortedSubmissions[0].score).toFixed(2)}
               </Col>
             ) : (
               <></>

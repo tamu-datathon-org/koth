@@ -68,7 +68,8 @@ const LeaderboardPage: React.FC<{}> = () => {
             {scoreSortedUserSubmissions.length ? (
               <>
                 <h5>
-                  Your Highest Score: {scoreSortedUserSubmissions[0].score}{" "}
+                  Your Highest Score:{" "}
+                  {Number(scoreSortedUserSubmissions[0].score).toFixed(2)}{" "}
                 </h5>
                 <h5>Rank #{topUserRank}</h5>
               </>
