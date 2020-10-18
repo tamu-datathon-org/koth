@@ -22,7 +22,7 @@ const getProblemDataHandler = async (
     a.score < b.score ? 1 : -1
   );
   let userAuthIdSet = new Set();
-  const filteredSubmissions = sortedSubmissions.filter((val) => {
+  const filteredSubmissions = sortedSubmissions.slice().filter((val) => {
     if (userAuthIdSet.has(val.userAuthId)) {
       return false;
     }

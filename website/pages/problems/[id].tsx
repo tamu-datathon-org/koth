@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
-import { Button, Col, Container, Row } from "react-bootstrap";
+import { Button, Col, Container, Row, Toast } from "react-bootstrap";
 import { LoadingSpinner } from "../../components/LoadingSpinner";
 import {
   SubmissionModal,
@@ -23,6 +23,7 @@ const ProblemPage: React.FC<{}> = () => {
   const [showSubmissionModal, setShowSubmissionModal] = useState<boolean>(
     false
   );
+  const [showToast, setShowToast] = useState(false);
   const [error, setError] = useState<boolean>(false);
   const problemId = router.query.id as string;
 
@@ -105,6 +106,27 @@ const ProblemPage: React.FC<{}> = () => {
 
   return (
     <Container fluid className={styles.problemPage}>
+      <Toast
+        onClose={() => setShowToast(false)}
+        style={{
+          position: "absolute",
+          top: "70px",
+          right: "20px",
+        }}
+        show={showToast}
+        delay={4000}
+        autohide
+      >
+        <Toast.Header>
+          <small>
+            The leaderboard is disabled to make the winner a surprise!
+            <br/>
+            <br/>
+            You can still find your best submission on the problem page.
+          </small>
+        </Toast.Header>
+        {/* <Toast.Body>See? Just like this.</Toast.Body> */}
+      </Toast>
       <Row className={`pb-3 justify-content-center`}>
         <h1 className={styles.problemTitle}>{problem.title}</h1>
       </Row>
@@ -129,9 +151,10 @@ const ProblemPage: React.FC<{}> = () => {
         <p>
           <Button
             variant="outline-primary"
-            href={`/koth/leaderboard/${problemId}`}
+            // href={`/koth/leaderboard/${problemId}`}
+            onClick={() => setShowToast(true)}
             target="_blank"
-            className={`${styles.btn} ${styles.detailsBtn}`}
+            className={`${styles.btn} ${styles.disabledLeaderboardbtn}`}
           >
             Leaderboard
           </Button>
