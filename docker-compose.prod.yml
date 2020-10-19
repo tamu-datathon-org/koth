@@ -23,6 +23,7 @@ services:
         volumes:
             - /var/run/docker.sock:/var/run/docker.sock
             - ../test-cases:/secret
+            - $PWD/worker:/workspace
             - ../keys:/keys
         ports:
             - 4000:3000

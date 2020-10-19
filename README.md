@@ -18,7 +18,11 @@ KOTH is a monorepo with packages that allows for automated judging of code submi
 A docker-compose file is provided to setup the whole thing. Make sure to create a `.env` file with fields from `sample.env`.
 
 ```bash
-$ docker-compose up
+$ docker-compose up # runs @koth/worker and @koth/website
 # now you should be able to go to http://localhost:3000/koth/
 # if you have an gatekeeper admin accessToken cookie you can go to http://localhost:3000/koth/admin/queues
+
+# if you just want to run the worker and queue (because normally the website would be hosted using JAMSTACK somewhere)
+# use this command
+$ docker-compose -f docker-compose.prod.yml up 
 ```
