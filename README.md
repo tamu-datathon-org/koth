@@ -8,7 +8,12 @@ KOTH is a monorepo with packages that allows for automated judging of code submi
  - `@koth/website`: The frontend and serverless endpoints for users. Lets people submit their code, view their submissions, and the leaderboard. This was hosted on [Vercel](https://vercel.com) for TAMU Datathon 2020. 
 
 <img src="assets/screenshots.png" width="100%" alt="KOTH being used in TAMU Datathon 2020"/>
-<center><i>KOTH being used in TAMU Datathon 2020</i></center>
+
+<p align="center">
+
+<i>KOTH being used in TAMU Datathon 2020</i>
+
+</p>
 
 
 ## Usage
