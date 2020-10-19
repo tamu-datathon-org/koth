@@ -23,7 +23,7 @@ const getSubmissionDataHandler = async (
       return;
     }
 
-    if (new Date().getTime() > new Date("October 18th 12:03:00-500").getTime()) {
+    if (new Date().getTime() > new Date("October 18, 2020 12:03:00-500").getTime()) {
       res.status(400).json({
         err: "Sorry! The market has closed! Thanks for playing!",
       });
