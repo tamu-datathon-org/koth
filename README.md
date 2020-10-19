@@ -10,9 +10,7 @@ KOTH is a monorepo with packages that allows for automated judging of code submi
 <img src="assets/screenshots.png" width="100%" alt="KOTH being used in TAMU Datathon 2020"/>
 
 <p align="center">
-
 <i>KOTH being used in TAMU Datathon 2020</i>
-
 </p>
 
 
