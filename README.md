@@ -3,6 +3,12 @@ King of the hill. See who's code is on top.
 
 KOTH is a monorepo with packages that allows for automated judging of code submissions. Think of it as a set of tools to create a more generalized Hackerrank, Kaggle, Leetcode, etc. Right now, this is pretty integrated with TAMU Datathon 2020 (especially the `@koth/website`) but we will work to make this more integrateable for other people to use.
 
+<p>
+  <a href="https://vercel.com?utm_source=tamu-datathon&utm_campaign=oss">
+    <img src="https://tamudatathon.com/static/img/sponsors/powered-by-vercel.svg" height="36px" alt="Powered by Vercel" />
+  </a>
+</p>
+
 **Packages:**
  - `@koth/worker`: The queue and worker system. Runs submitted code in a specified [challenge docker container](/challenge-containers) and uses [a customizable evaluator](/worker/src/evaluators) to grade submissions (using stdin and stdout). This was hosted on a docker compose setup on an EC2 instance for TAMU Datathon 2020.
  - `@koth/website`: The frontend and serverless endpoints for users. Lets people submit their code, view their submissions, and the leaderboard. This was hosted on [Vercel](https://vercel.com) for TAMU Datathon 2020. 
@@ -26,11 +32,3 @@ $ docker-compose up # runs @koth/worker and @koth/website
 # use this command
 $ docker-compose -f docker-compose.prod.yml up 
 ```
-
----
-
-<p align="center">
-  <a href="https://vercel.com?utm_source=tamu-datathon&utm_campaign=oss">
-    TAMU Datathon is powered by </br><img src="https://tamudatathon.com/static/img/sponsors/vercel_dark.svg" height="24px" alt="Vercel" />
-  </a>
-</p>
